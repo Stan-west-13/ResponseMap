@@ -102,14 +102,3 @@ cleaned2 <- read.csv("cleaned_2.csv") %>%
 cleaned_maps <- rbind(cleaned_maps[!cleaned_maps$rowid %in% y$rowid,-9],cleaned2[,-9]) 
 
 write.csv(cleaned_maps, "data/cross_study_cleanedRevisions.csv")
-z <- cleaned_maps %>% 
-  select(response,revision) %>% 
-  filter(!is.na(revision)) %>% 
-  unique() %>% 
-  group_by(response) %>% 
-  summarize(n_revision = length(unique(revision)))
-
-
-
-
-
