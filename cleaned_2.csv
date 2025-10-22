@@ -1,0 +1,213 @@
+id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id,rowid,n_revision
+6103,30,13,a lot,have,lot,193,26890,6092,2
+7749,40,7,a lot,people,lot,193,26890,19532,2
+7608,39,12,abe lincoln,penny,abraham,7693,NA,19391,2
+7842,39,19,abe lincoln,penny,abraham,7693,NA,7822,2
+7658,38,281,atx,party,atx,NA,NA,7640,2
+8306,42,281,atx,pool,atx,NA,NA,8286,2
+7486,37,281,atx,pajamas,atx,NA,NA,7468,2
+639,4,258,awww,baby,aw,1510,NA,12441,2
+2616,13,307,awww,child,aw,1510,NA,2615,2
+5819,29,268,baby food,highchair,food,566,18142,17606,2
+643,4,268,baby food,baby,food,566,18142,12445,2
+7659,38,353,ballons,party,balloon,5134,3147,7641,2
+2156,11,314,ballons,bubble,balloon,5134,3147,13952,2
+2537,13,427,best buy,buy,best buy,235,3991,14333,2
+9541,48,427,best buy,store,best buy,NA,NA,21317,2
+4133,20,457,best friend,daddy,bestfriend,NA,NA,4129,2
+2028,10,457,best friend,call,bestfriend,NA,NA,2027,2
+6778,34,520,body part,leg,body,516,4813,26430,2
+4852,24,532,body part,ear,body,516,4813,26431,2
+10530,54,532,body part,tummy,body,516,4813,26432,2
+215,2,532,body part,back,body,516,4813,215,2
+6137,30,736,can't,have,cant,15084,NA,6125,2
+6400,31,736,can't,help,cant,15084,NA,26394,2
+11479,59,736,can't,would,cant,15084,NA,26395,2
+4593,23,748,can't,don't,cant,15084,NA,26396,2
+5577,28,748,can't,hard,cant,15084,NA,26397,2
+6821,33,882,chicken salad,lunch,salad,2787,39408,6807,2
+3343,17,912,chicken salad,chicken,salad,2787,39408,15137,2
+5213,26,884,chickfila,food,chickfila,NA,NA,5206,2
+6822,33,884,chickfila,lunch,chickfila,NA,NA,26433,2
+3346,17,916,chickfila,chicken,chickfila,NA,NA,26434,2
+2923,15,1167,cotton candy,candy,cotton candy,4194,10256,14718,2
+6688,32,1121,cotton candy,lollipop,cotton candy,NA,NA,6674,2
+1714,9,1210,cream cheese,bread,cream cheese,1638,7524,13511,2
+3123,16,1210,cream cheese,cheese,cream cheese,1404,10648,14918,2
+37,1,1194,crocs,alligator,crocs,15866,10817,37,2
+1081,6,1194,crocs,boots,crocs,15866,10817,1081,2
+11494,59,1361,didn't,would,didnt,20771,NA,11463,2
+4618,23,1403,didn't,don't,didnt,20771,NA,16409,2
+3941,20,1404,diet coke,cup,coke,3231,8623,15733,2
+4718,23,1366,diet coke,drink,coke,3231,8623,4713,2
+6835,33,1379,dining hall,lunch,dining hall,NA,NA,6820,2
+4719,23,1379,dining hall,drink,dining hall,NA,NA,4714,2
+5968,29,1382,dino,grrr,dinosaur,8704,12977,5959,2
+496,3,1382,dino,bear,dinosaur,8704,12977,496,2
+4621,23,1466,do it,don't,do,34,13746,16412,2
+7334,37,1466,do it,now,do,34,13746,19119,2
+11498,59,1422,do it,would,do,34,13746,11467,2
+6162,30,1443,don't,have,dont,13261,NA,6150,2
+10900,56,1443,don't,turn around,dont,13261,NA,26435,2
+711,4,1489,don't,baby,dont,13261,NA,26436,2
+4627,23,1489,don't,don't,dont,13261,NA,26437,2
+7337,37,1489,don't,now,dont,13261,NA,26438,2
+8109,41,1489,don't,pretend,dont,13261,NA,26439,2
+10062,51,1489,don't,uhoh,dont,13261,NA,26440,2
+8110,41,1490,don't know,pretend,don't know,NA,NA,19891,2
+1271,7,1490,don't know,behind,don't know,45,25528,13071,2
+4556,22,1483,dressup,doll,dressup,881,14216,4551,2
+7704,38,1483,dressup,party,dressup,NA,NA,7686,2
+8116,41,1529,dressup,pretend,dressup,NA,NA,19897,2
+11698,60,1506,dum dum,yum yum,dum dum,NA,NA,11666,2
+6699,32,1506,dum dum,lollipop,dum dum,NA,NA,6685,2
+9459,48,1576,eminem,spaghetti,eminem,NA,NA,9435,2
+2935,15,1634,eminem,candy,eminem,NA,NA,14730,2
+7031,34,1901,freds,moose,freds,NA,NA,7016,2
+4182,21,1956,freds,dance,freds,NA,NA,15974,2
+498,3,2071,get up,awake,up,38,49154,12300,2
+9134,46,2071,get up,stand,up,38,49154,26441,2
+10527,53,2071,get up,wake,up,38,49154,26471,2
+7881,39,2073,good luck,penny,luck,524,26991,7861,2
+8567,43,2132,good luck,rooster,luck,524,26991,20347,2
+7882,39,2079,goodluck,penny,luck,524,26991,7862,2
+7657,39,2135,goodluck,penny,luck,524,26991,19440,2
+531,3,2173,grrr,bear,gr,27043,NA,531,2
+6004,29,2173,grrr,grrr,gr,27043,NA,5995,2
+533,3,2175,grrrrr,bear,gr,27043,NA,533,2
+6005,29,2175,grrrrr,grrr,gr,27043,NA,5996,2
+8191,41,2201,gymnosperm,plant,gymnosperm,NA,NA,8171,2
+5071,25,2201,gymnosperm,flower,gymnosperm,NA,NA,5065,2
+9779,49,2280,hang up,towel,hang,523,20983,21555,2
+2086,10,2227,hang up,call,hang,523,20983,2085,2
+6203,30,2260,haven't,have,havent,33161,NA,6191,2
+4652,23,2310,haven't,don't,havent,33161,NA,16442,2
+1792,41,828,hiar,ponytail,hair,562,20778,25595,2
+5892,29,2358,hiar,highchair,higher,1782,21692,17679,2
+5894,29,2367,high chair,highchair,highchair,40544,21690,17681,2
+742,4,2367,high chair,baby,highchair,40544,21690,12543,2
+5557,27,2329,highfive,give me five!,highfive,NA,NA,5550,2
+606,16,832,highfive,combined,highfive,NA,NA,24413,2
+5296,26,2386,hot dog,food,hotdog,27071,22214,5289,2
+1770,9,2447,hot dog,bread,hotdog,27071,22214,13567,2
+6318,31,2482,ice chest,ice,ice chest,NA,NA,18105,2
+11360,57,2482,ice chest,white,ice chest,NA,NA,23128,2
+5301,26,2444,ice cream,food,icecream,NA,22686,5294,2
+6319,31,2483,ice cream,ice,icecream,NA,22686,26398,2
+7060,34,2444,ice cream,moose,icecream,NA,22686,26399,2
+10026,51,2444,ice cream,tongue,icecream,NA,22686,26400,2
+11225,57,2444,ice cream,vanilla,icecream,NA,22686,26401,2
+2803,14,2483,ice cream,cake,icecream,NA,22686,26402,2
+7751,38,2444,ice cream,party,icecream,NA,22686,26403,2
+8932,45,2444,ice cream,refrigerator,icecream,NA,22686,26404,2
+11361,57,2483,ice cream,white,icecream,NA,22686,26405,2
+11939,60,2483,ice cream,zoo,icecream,NA,22686,26406,2
+8933,45,2446,ice tea,refrigerator,tea,1352,45691,8911,2
+6322,31,2486,ice tea,ice,tea,1352,45691,18108,2
+1320,7,2550,infront,behind,front,448,18758,13119,2
+905,5,2495,infront,beside,front,448,18758,905,2
+4914,24,2578,jewlery,ear,jewelry,4027,24913,4908,2
+2614,13,2631,jewlery,buy,jewelry,4027,24913,14410,2
+10962,56,2612,jumpscare,turn around,scare,1489,39785,10935,2
+1327,7,2663,jumpscare,behind,scare,1489,39785,13126,2
+4757,23,2679,koolaid,drink,koolaid,NA,NA,4752,2
+6227,30,2679,koolaid,have,koolaid,NA,NA,6214,2
+3805,19,2783,lay down,couch,lay,999,25935,15597,2
+307,2,2726,lay down,back,lay,999,25935,307,2
+519,3,2787,laying down,awake,laying,3184,25942,12321,2
+919,5,2728,laying down,beside,laying,3184,25942,919,2
+6473,32,2878,litter box,kitty,litter,7513,26584,18259,2
+2509,12,2814,litter box,cat,litter,7513,26584,2508,2
+3753,18,2829,livingroom,couch,livingroom,NA,NA,3752,2
+3811,19,2887,livingroom,couch,livingroom,NA,NA,15603,2
+2727,13,2847,lolipop,child,lollipop,13030,26773,2726,2
+2981,15,2904,lolipop,candy,lollipop,13030,26773,14776,2
+94,1,2880,lousiana,alligator,louisiana,8801,NA,94,2
+1154,6,2880,lousiana,boots,louisiana,8801,NA,1154,2
+8194,41,2985,make up,pretend,makeup,3060,27327,19975,2
+5050,25,2985,make up,face,makeup,3060,27327,16839,2
+3435,17,3048,mcdonald's,chicken,mcdonald,8528,NA,26455,2
+7218,35,2997,mcdonald's,napkin,mcdonald,8528,NA,26456,2
+5312,26,2997,mcdonald's,food,mcdonald,8528,NA,5305,2
+6885,33,2998,mcdonalds,lunch,mcdonald,8528,NA,6870,2
+11748,60,2998,mcdonalds,yum yum,mcdonald,8528,NA,11715,2
+5313,26,2998,mcdonalds,food,mcdonald,8528,NA,5306,2
+9500,48,3027,meme,spaghetti,meme,NA,NA,9476,2
+10985,56,3027,meme,turn around,meme,NA,NA,10958,2
+6890,33,3054,mid day,lunch,midday,17622,28405,6875,2
+7217,36,3105,mid day,nap,midday,17622,28405,19002,2
+6526,31,3095,moive,help,move,292,29422,6512,2
+10990,56,3095,moive,turn around,move,292,29422,10963,2
+8385,42,3185,my mom,pool,mom,503,29044,8365,2
+8955,45,3241,my mom,short,mom,503,29044,20734,2
+2135,10,3185,my mom,call,mom,503,29044,2134,2
+1356,7,3318,next to,behind,next,212,30207,26457,2
+110,1,3318,next to,above,next,212,30207,26458,2
+940,5,3244,next to,beside,next,212,30207,940,2
+10119,51,3371,not good,uhoh,no,20,30327,21891,2
+4688,23,3371,not good,don't,no,20,30327,16478,2
+952,5,3371,on top,beside,top,565,46783,952,2
+1365,7,3461,on top,behind,top,565,46783,13163,2
+7690,39,3466,one cent,penny,cent,4086,7135,19473,2
+7913,39,3373,one cent,penny,cent,4086,7135,7893,2
+10129,51,3475,oopsie,uhoh,oops,3525,NA,21901,2
+7405,36,3391,oopsie,ouch,oops,3525,NA,7387,2
+4012,20,3492,orange juice,cup,juice,2138,25093,15804,2
+7069,35,3492,orange juice,muffin,juice,2138,25093,18854,2
+4775,23,3403,orange juice,drink,juice,2138,25093,4770,2
+962,5,3444,over there,beside,there,24,46158,962,2
+1372,7,3524,over there,behind,there,24,46158,13170,2
+1804,9,3559,panera,bread,panera,NA,NA,13601,2
+10054,51,3486,panera,tongue,panera,NA,NA,10029,2
+9798,49,3568,paper towel,towel,paper towel,761,32232,26459,2
+7232,35,3497,paper towel,napkin,paper towel,761,32232,26460,2
+3175,15,3497,paper towel,clean,paper towel,NA,NA,3174,2
+1428,7,3570,peices,break,piece,1483,33526,1428,2
+8802,44,3570,peices,puzzle,piece,1483,33526,26461,2
+336,9,1285,peices,bits,piece,1483,33526,26462,2
+7238,36,3726,pjs,nap,pajamas,6046,32074,19023,2
+10355,52,3726,pjs,underpants,pajamas,6046,32074,22127,2
+7589,37,3669,pjs,pajamas,pajamas,6046,32074,7571,2
+9212,46,3766,point of view,stand,viewpoint,16972,49792,20989,2
+5081,25,3766,point of view,face,viewpoint,16972,49792,16870,2
+7427,37,4154,right now,now,right now,53,38722,26463,2
+11046,56,4063,right now,turn around,right now,53,38722,26464,2
+4794,23,4063,right now,drink,right now,NA,NA,4789,2
+11257,57,4121,rootbeer,vanilla,rootbeer,NA,NA,11227,2
+4796,23,4121,rootbeer,drink,rootbeer,NA,NA,4791,2
+1158,6,4301,scary movies,basement,scary movies,1475,29435,12958,2
+10470,53,4230,scary movies,tractor,scary movies,NA,NA,10445,2
+11791,59,4307,school bus,yellow,bus,1261,6014,23555,2
+1748,8,4238,school bus,bump,bus,1261,6014,1747,2
+3004,14,4347,shhh,clap,shhh,NA,NA,3003,2
+6072,29,4347,shhh,grrr,shhh,NA,NA,6061,2
+4038,20,4467,sippy cup,cup,sippy,41592,NA,15830,2
+4803,23,4423,sippy cup,drink,sippy,41592,NA,4798,2
+10649,54,4710,stomache,tummy,stomach,1531,43912,10623,2
+11808,60,4710,stomache,yum yum,stomach,1531,43912,11775,2
+10994,55,5054,the people,we,people,131,32937,22763,2
+11429,58,4973,the people,we,people,131,32937,11399,2
+11469,57,5256,tshirt,white,shirt,1359,41013,26465,2
+9406,47,5173,tshirt,shirt,shirt,1359,41013,26468,2
+7642,37,5173,tshirt,pajamas,shirt,1359,41013,7624,2
+11823,60,5184,tum tum,yum yum,tum tum,15610,43913,11790,2
+10665,54,5184,tum tum,tummy,tum tum,NA,NA,10639,2
+1443,7,5270,turn around,behind,turn,300,47728,26469,2
+11115,56,5196,turn around,turn around,turn,300,47728,26470,2
+430,2,5196,turn around,back,turn,300,47728,430,2
+184,1,5364,up high,above,high,462,21684,11987,2
+5671,27,5279,up high,give me five!,high,462,21684,5664,2
+185,1,5366,up top,above,top,565,46783,11988,2
+5672,27,5280,up top,give me five!,top,NA,NA,5665,2
+424,11,1911,valorant,brimstone,valiant,12203,49399,24232,2
+1200,6,5392,valorant,basement,valiant,12203,49399,13000,2
+10617,53,5439,wake up,wake,up,38,49154,26472,2
+8643,43,5439,wake up,rooster,up,38,49154,26473,2
+617,3,5439,wake up,awake,up,38,49154,12419,2
+6356,30,5530,won't,have,wont,16243,51202,6343,2
+11637,59,5530,won't,would,wont,16243,51202,26474,2
+4783,23,5612,won't,don't,wont,16243,51202,26475,2
+1036,24,1979,writting,forum,write,691,51439,24842,2
+7605,38,5651,writting,pencil,write,691,51439,19388,2
+11023,55,5659,yall,we,yall,NA,NA,22792,2
+11455,58,5582,yall,we,yall,NA,NA,11425,2

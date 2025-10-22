@@ -1,0 +1,84 @@
+id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id,n_revision
+997,24,1061,lsu,forum,lsu,NA,NA,3
+6400,31,736,can't,help,cant,15084,NA,3
+11479,59,736,can't,would,cant,15084,NA,3
+4593,23,748,can't,don't,cant,15084,NA,3
+5577,28,748,can't,hard,cant,15084,NA,3
+6319,31,2483,ice cream,ice,icecream,NA,22686,3
+7060,34,2444,ice cream,moose,icecream,NA,22686,3
+10026,51,2444,ice cream,tongue,icecream,NA,22686,3
+11225,57,2444,ice cream,vanilla,icecream,NA,22686,3
+2803,14,2483,ice cream,cake,icecream,NA,22686,3
+7751,38,2444,ice cream,party,icecream,NA,22686,3
+8932,45,2444,ice cream,refrigerator,icecream,NA,22686,3
+11361,57,2483,ice cream,white,icecream,NA,22686,3
+11939,60,2483,ice cream,zoo,icecream,NA,22686,3
+9314,47,2894,lsu,shirt,lsu,NA,NA,3
+5825,28,2894,lsu,grandpa,lsu,NA,NA,3
+6020,29,2894,lsu,grrr,lsu,NA,NA,3
+7769,38,2894,lsu,party,lsu,NA,NA,3
+1121,6,2950,lsu,basement,lsu,NA,NA,3
+11372,57,2950,lsu,white,lsu,NA,NA,3
+11755,59,2950,lsu,yellow,lsu,NA,NA,3
+261,7,1061,lsu,auditorium,lsu,NA,NA,3
+8231,41,3743,playdate,pretend,playdate,NA,NA,3
+6044,29,3692,playdate,grrr,playdate,NA,NA,3
+1736,39,1328,playdate,plaything,playdate,NA,NA,3
+1914,43,883,idk,repression,,NA,NA,2
+10021,51,86,ahhh,uhoh,ah,589,NA,2
+4119,20,97,ahhh,daddy,ah,589,NA,2
+5927,29,97,ahhh,grrr,ah,589,NA,2
+5180,26,138,alot,food,alot,193,26890,2
+6108,30,138,alot,have,alot,193,26890,2
+533,15,57,alot,collected,alot,193,26890,2
+1499,34,57,alot,multitude,alot,193,26890,2
+1604,37,57,alot,overdone,alot,193,26890,2
+3314,17,374,bbq,chicken,bbq,NA,NA,2
+3854,19,397,bbq,country,bbq,NA,NA,2
+4129,20,397,bbq,daddy,bbq,NA,NA,2
+6778,34,520,body part,leg,body,516,4813,2
+4852,24,532,body part,ear,body,516,4813,2
+10530,54,532,body part,tummy,body,516,4813,2
+6822,33,884,chickfila,lunch,chickfila,NA,NA,2
+3346,17,916,chickfila,chicken,chickfila,NA,NA,2
+10900,56,1443,don't,turn around,dont,13261,NA,2
+711,4,1489,don't,baby,dont,13261,NA,2
+4627,23,1489,don't,don't,dont,13261,NA,2
+7337,37,1489,don't,now,dont,13261,NA,2
+8109,41,1489,don't,pretend,dont,13261,NA,2
+10062,51,1489,don't,uhoh,dont,13261,NA,2
+9134,46,2071,get up,stand,up,38,49154,2
+4218,20,2456,idk,daddy,idk,NA,NA,2
+6216,30,2456,idk,have,idk,NA,NA,2
+11734,60,2456,idk,yum yum,idk,NA,NA,2
+295,2,2502,idk,after,idk,NA,NA,2
+1314,7,2502,idk,behind,idk,NA,NA,2
+2006,10,2502,idk,bring,idk,NA,NA,2
+5438,27,2502,idk,give,idk,NA,NA,2
+9154,46,2502,idk,stand,idk,NA,NA,2
+11111,56,2502,idk,were,idk,NA,NA,2
+225,6,883,idk,arachnid,idk,NA,NA,2
+7756,40,111,alot,people,alot,193,26890,2
+9851,50,111,alot,trash,alot,193,26890,2
+10635,54,111,alot,walk,alot,193,26890,2
+3435,17,3048,mcdonald's,chicken,mcdonald,8528,NA,2
+7218,35,2997,mcdonald's,napkin,mcdonald,8528,NA,2
+1356,7,3318,next to,behind,next,212,30207,2
+110,1,3318,next to,above,next,212,30207,2
+9798,49,3568,paper towel,towel,paper,761,32232,2
+7232,35,3497,paper towel,napkin,paper,761,32232,2
+8802,44,3570,peices,puzzle,piece,582,33524,2
+336,9,1285,peices,bits,piece,1483,33526,2
+7427,37,4154,right now,now,right,53,38722,2
+11046,56,4063,right now,turn around,right,53,38722,2
+11469,57,5256,tshirt,white,shirt,1359,41013,2
+1502,7,5045,time out,break,timeout,24641,46507,2
+9286,46,5124,time out,stand,timeout,24641,46507,2
+9406,47,5173,tshirt,shirt,shirt,1359,41013,2
+1443,7,5270,turn around,behind,turn,300,47728,2
+11115,56,5196,turn around,turn around,turn,300,47728,2
+10527,53,2071,get up,wake,up,38,49154,2
+10617,53,5439,wake up,wake,up,38,49154,2
+8643,43,5439,wake up,rooster,up,38,49154,2
+11637,59,5530,won't,would,wont,16243,51202,2
+4783,23,5612,won't,don't,wont,16243,51202,2
