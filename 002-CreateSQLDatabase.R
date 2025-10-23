@@ -56,5 +56,48 @@ responses_table <- response_behavior_table %>%
   arrange(response) %>%
   mutate(id = seq_len(n()),.before = response) 
 
+response_behavior_table <- response_behavior_table %>%
+  left_join(responses_table %>% rename(response_id = id), by = "response") %>%
+  select(id, participant, cue_id, response_order, response_id, -response)
 
+cues_responses_table <- response_behavior_table %>%
+  select(cue_id, response_id) %>%
+  distinct() %>%
+  arrange(cue_id, response_id) %>%
+  mutate(id = seq_len(n())) %>%
+  select(id, cue_id, response_id)
+
+
+response_map_table <- cues_responses_table %>%
+  left_join(
+    responses_table %>% rename(response_id = id),
+    by = "response_id"
+  ) %>%
+  left_join(
+    kuperman_table %>% select(response = word, kuperman_id = id),
+    by = "response"
+  ) %>%
+  left_join(
+    subtlex_table %>% select(response = word, subtlex_id = id),
+    by = "response"
+  ) %>%
+  select(-cue_id) %>%
+  left_join(
+    cue_table %>% select(cue_id = id, response = cue),
+    by = "response"
+  ) %>%
+  filter(!(is.na(kuperman_id) & is.na(subtlex_id))) %>%
+  rename(cue_response_id = id) %>%
+  mutate(revision = NA, researcher_id = NA, timestamp = NA, id = seq_len(n())) %>%
+  select(id, cue_response_id, kuperman_id, subtlex_id, cue_id, revision, researcher_id, timestamp, -response)
+
+
+study_table <- data.frame(
+  id = 1:5,
+  study = c("Adult Associations 1",
+            "Adult Associations 2",
+            "Word Association RT",
+            "Melodies and Meanings",
+            "Word Association RTWM")
+)
 

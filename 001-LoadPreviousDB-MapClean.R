@@ -21,7 +21,8 @@ dbDisconnect(first_collection)
 cues_response_maps1 <- cue_response %>%
   left_join(responses, by = c("response_id" = "id" )) %>%
   left_join(cues, by = c("cue_id" = "id")) %>%
-  left_join(select(response_maps,cue_response_id,revision,subtlex_id,kuperman_id), by = c("id" = "cue_response_id"))
+  left_join(select(response_maps,cue_response_id,revision,subtlex_id,kuperman_id), 
+            by = c("id" = "cue_response_id"))
 
 
 ## Collection 2 db connection
@@ -37,7 +38,8 @@ dbDisconnect(second_collection)
 cues_response_maps2 <- cue_response2 %>%
   left_join(responses2, by = c("response_id" = "id" )) %>%
   left_join(cues2, by = c("cue_id" = "id")) %>%
-  left_join(select(response_maps2,cue_response_id,revision,subtlex_id,kuperman_id), by = c("id" = "cue_response_id"))
+  left_join(select(response_maps2,cue_response_id,revision,subtlex_id,kuperman_id), 
+            by = c("id" = "cue_response_id"))
 
 ## Collection 3 db connection
 third_collection <- dbConnect(RSQLite::SQLite(), "Word-AssociationRT.db")
@@ -53,7 +55,8 @@ dbDisconnect(third_collection)
 cues_response_maps3 <- cue_response3 %>%
   left_join(responses3, by = c("response_id" = "id" )) %>%
   left_join(cues3, by = c("cue_id" = "id")) %>%
-  left_join(select(response_maps3,cue_response_id,revision,subtlex_id,kuperman_id), by = c("id" = "cue_response_id"))
+  left_join(select(response_maps3,cue_response_id,revision,subtlex_id,kuperman_id), 
+            by = c("id" = "cue_response_id"))
 
 
 
