@@ -24,6 +24,10 @@ cues_response_maps1 <- cue_response %>%
   left_join(select(response_maps,cue_response_id,revision,subtlex_id,kuperman_id), 
             by = c("id" = "cue_response_id"))
 
+cues_responses_tbl <- cues_response_maps1 %>%
+  select(cue,response,revision,kuperman_id,subtlex_id) %>%
+  mutate(study_id = 1)
+
 
 ## Collection 2 db connection
 second_collection <- dbConnect(RSQLite::SQLite(), "semantic_association_validation-crc_2.db")
@@ -40,6 +44,10 @@ cues_response_maps2 <- cue_response2 %>%
   left_join(cues2, by = c("cue_id" = "id")) %>%
   left_join(select(response_maps2,cue_response_id,revision,subtlex_id,kuperman_id), 
             by = c("id" = "cue_response_id"))
+
+cues_responses_tbl2 <- cues_response_maps2 %>%
+  select(cue,response,revision,kuperman_id,subtlex_id) %>%
+  mutate(study_id = 2)
 
 ## Collection 3 db connection
 third_collection <- dbConnect(RSQLite::SQLite(), "Word-AssociationRT.db")
@@ -58,9 +66,14 @@ cues_response_maps3 <- cue_response3 %>%
   left_join(select(response_maps3,cue_response_id,revision,subtlex_id,kuperman_id), 
             by = c("id" = "cue_response_id"))
 
+cues_responses_tbl3 <- cues_response_maps3 %>%
+  select(cue,response,revision,kuperman_id,subtlex_id) %>%
+  mutate(study_id = 3)
 
 
 
+all_cues_responses <- rbind(cues_responses_tbl,cues_responses_tbl2,cues_responses_tbl3)
+write.csv(all_cues_responses, "data/studyWise_cues_responses.csv")
 ### Clean dupes
 cleaned <- read.csv("clean_dups.csv") %>%
   select(-n_revision)

@@ -7,6 +7,7 @@ d <- read.csv("data/Metadata_MM_2025-10-22.csv")
 
 cleaned <- read.csv("data/cross_study_cleanedRevisions.csv")
 
+cues_responses_archive <- read.csv("data/studyWise_cues_responses.csv")
 ## Prepare tables
 
 kuperman_table <- read_csv("data/AoA_51715_words.csv") %>%
@@ -100,4 +101,7 @@ study_table <- data.frame(
             "Melodies and Meanings",
             "Word Association RTWM")
 )
+
+
+
 
