@@ -93,18 +93,15 @@ response_study_table <- response_behavior_table %>%
   select(-response)
 
 response_behavior_table <- response_behavior_table %>%
-  left_join(select(responses_table,response_id = id,response), by = "response") 
+  left_join(select(responses_table,response_id = id,response), by = "response") %>%
+  left_join(select(cue_study_table,cue_study_id = id,cue_id), by = "cue_study_id")
 
 
 
 
 cues_responses_table <- response_behavior_table %>%
-  select(cue_study_id, response_id) %>%
-  distinct() %>%
-  arrange(cue_study_id, response_id) %>%
-  left_join(select(response_study_table,response_study_id = id,response_id),by="response_id") %>%
-  mutate(id = seq_len(n()),.before = cue_study_id) %>%
-  select(id, cue_study_id, response_study_id)
+  select(cue_study_id,response_id) %>%
+  left_join(select(response_study_table, response_study_id = id,response_id), by = "response_id")
 
 
 response_map_table <- cues_responses_table %>%
