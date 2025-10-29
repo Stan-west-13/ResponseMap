@@ -3,13 +3,15 @@ library(tidyr)
 library(dplyr)
 library(readr)
 ## Load current responses and response maps
-d <- read.csv("data/Metadata_MM_2025-10-22.csv")
+d <- read.csv("data/Metadata_MM_2025-10-22.csv") %>%
+  mutate(study_id = 4)
 
 cleaned <- read.csv("data/cross_study_cleanedRevisions.csv")
 
 cues_responses_archive <- read.csv("data/studyWise_cues_responses.csv")
 ## Prepare tables
 
+## AoA Table
 kuperman_table <- read_csv("data/AoA_51715_words.csv") %>%
   mutate(
     id = seq_len(n()),
@@ -18,6 +20,7 @@ kuperman_table <- read_csv("data/AoA_51715_words.csv") %>%
   select(id, word, aoa = AoA_Kup_lem) %>%
   drop_na()
 
+## Word Frequency Table
 subtlex_table <- read_csv("data/SUBTLEXusfrequencyabove1.csv") %>%
   mutate(
     id = seq_len(n()),
@@ -26,29 +29,53 @@ subtlex_table <- read_csv("data/SUBTLEXusfrequencyabove1.csv") %>%
   select(id, word, Lg10WF,Lg10CD) %>%
   drop_na()
 
-cue_table <- d %>%
+
+
+## Cues table
+cue_table <- cues_responses_archive %>%
   select(cue) %>%
   distinct() %>%
+  rbind(data.frame(cue = unique(d$cue))) %>%
   arrange(cue) %>%
+  unique() %>%
   mutate(id = seq_len(n())) %>%
   select(id, cue)
 
+## Cues-study table
+cue_study_table <- cues_responses_archive %>%
+  select(cue,study_id) %>%
+  rbind(data.frame(study_id = 4, cue = unique(d$cue))) %>%
+  unique() %>%
+  left_join(cue_table, by = "cue") %>%
+  rename(cue_id = id) %>%
+  mutate(id = seq.int(n()),.before = study_id)
+
+
+
+## Response by participant table 
 response_behavior_table <- d %>%
   select(
     participant,
     cue,
     response_order,
-    response
+    response,
+    study_id
   ) %>%
+  rbind(cues_responses_archive %>%
+          select(participant = subject_id,
+                 cue,
+                 response_order,
+                 response,
+                 study_id)) %>%
   mutate(
     id = 1:nrow(.),.before = participant,
     response = tolower(str_trim(response))
   ) %>%
   left_join(
-    cue_table %>% select(cue, cue_id = id),
-    by = "cue"
+    cue_study_table %>% select(cue_study_id = id,cue,study_id),
+    by = c("cue","study_id")
   ) %>%
-  select(-cue)
+  select(-cue,-study_id)
 
 responses_table <- response_behavior_table %>%
   filter(!response == "") %>%
@@ -59,14 +86,14 @@ responses_table <- response_behavior_table %>%
 
 response_behavior_table <- response_behavior_table %>%
   left_join(responses_table %>% rename(response_id = id), by = "response") %>%
-  select(id, participant, cue_id, response_order, response_id, -response)
+  select(id, participant, cue_study_id, response_order, response_id, -response)
 
 cues_responses_table <- response_behavior_table %>%
-  select(cue_id, response_id) %>%
+  select(cue_study_id, response_id) %>%
   distinct() %>%
-  arrange(cue_id, response_id) %>%
+  arrange(cue_study_id, response_id) %>%
   mutate(id = seq_len(n())) %>%
-  select(id, cue_id, response_id)
+  select(id, cue_study_id, response_id)
 
 
 response_map_table <- cues_responses_table %>%
@@ -94,14 +121,32 @@ response_map_table <- cues_responses_table %>%
 
 
 study_table <- data.frame(
-  id = 1:5,
+  id = 1:4,
   study = c("Adult Associations 1",
             "Adult Associations 2",
             "Word Association RT",
-            "Melodies and Meanings",
-            "Word Association RTWM")
+            "Melodies and Meanings")
 )
 
+study_responses_table <- data.frame(
+  study_id = cues_responses_archive$study_id,
+  response = cues_responses_archive$response
+) %>%
+  mutate(id = seq.int(n()),.before = study_id)
+  
+
+subjects_table <- d %>%
+  select(
+    participant,
+    condition
+  ) %>%
+  unique()
+subjects_table <- subjects_table[!subjects_table$id == 75128 & subjects_table$COND_ID == 2,]
+
+words_meta_table <- kuperman_table %>%
+  select(word, kuperman_id = id) %>%
+  full_join(subtlex_table %>% select(word, subtlex_id = id), by = "word") %>%
+  full_join(cue_table %>% select(word = cue, cue_id = id), by = "word")
 
 
 

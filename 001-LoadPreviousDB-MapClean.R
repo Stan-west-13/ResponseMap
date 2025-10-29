@@ -16,17 +16,17 @@ response_maps <- dbGetQuery(first_collection, 'SELECT * FROM response_map') %>%
 cues <- dbGetQuery(first_collection, 'SELECT * FROM cues')
 responses <- dbGetQuery(first_collection, 'SELECT * FROM responses')
 cue_response <- dbGetQuery(first_collection, 'SELECT * FROM cues_responses')
+response_behavior <- dbGetQuery(first_collection, 'SELECT * FROM response_behaviors')
 dbDisconnect(first_collection)
 
-cues_response_maps1 <- cue_response %>%
+cues_response_maps1 <- response_behavior %>%
+  left_join(cue_response %>% rename(cue_response_id = id), by = c("cue_id","response_id")) %>%
   left_join(responses, by = c("response_id" = "id" )) %>%
   left_join(cues, by = c("cue_id" = "id")) %>%
   left_join(select(response_maps,cue_response_id,revision,subtlex_id,kuperman_id), 
-            by = c("id" = "cue_response_id"))
-
-cues_responses_tbl <- cues_response_maps1 %>%
-  select(cue,response,revision,kuperman_id,subtlex_id) %>%
+            by = c("cue_response_id")) %>%
   mutate(study_id = 1)
+
 
 
 ## Collection 2 db connection
@@ -37,17 +37,18 @@ response_maps2 <- dbGetQuery(second_collection, 'SELECT * FROM response_map')%>%
 cues2 <- dbGetQuery(second_collection, 'SELECT * FROM cues')
 responses2 <- dbGetQuery(second_collection, 'SELECT * FROM responses')
 cue_response2 <- dbGetQuery(second_collection, 'SELECT * FROM cues_responses')
+response_behavior2 <- dbGetQuery(second_collection, 'SELECT * FROM response_behaviors')
 dbDisconnect(second_collection)
 
-cues_response_maps2 <- cue_response2 %>%
+cues_response_maps2 <- response_behavior2 %>%
+  left_join(cue_response2 %>% rename(cue_response_id = id), by = c("cue_id","response_id")) %>%
   left_join(responses2, by = c("response_id" = "id" )) %>%
   left_join(cues2, by = c("cue_id" = "id")) %>%
   left_join(select(response_maps2,cue_response_id,revision,subtlex_id,kuperman_id), 
-            by = c("id" = "cue_response_id"))
-
-cues_responses_tbl2 <- cues_response_maps2 %>%
-  select(cue,response,revision,kuperman_id,subtlex_id) %>%
+            by = c("cue_response_id")) %>%
   mutate(study_id = 2)
+
+
 
 ## Collection 3 db connection
 third_collection <- dbConnect(RSQLite::SQLite(), "Word-AssociationRT.db")
@@ -57,22 +58,25 @@ response_maps3 <- dbGetQuery(third_collection, 'SELECT * FROM response_map')%>%
 cues3 <- dbGetQuery(third_collection, 'SELECT * FROM cues')
 responses3 <- dbGetQuery(third_collection, 'SELECT * FROM responses')
 cue_response3 <- dbGetQuery(third_collection, 'SELECT * FROM cues_responses')
+response_behavior3 <- dbGetQuery(third_collection, 'SELECT * FROM response_behaviors')
+
 dbDisconnect(third_collection)
 
 
-cues_response_maps3 <- cue_response3 %>%
+cues_response_maps3 <- response_behavior3 %>%
+  left_join(cue_response3 %>% rename(cue_response_id = id), by = c("cue_id","response_id")) %>%
   left_join(responses3, by = c("response_id" = "id" )) %>%
   left_join(cues3, by = c("cue_id" = "id")) %>%
   left_join(select(response_maps3,cue_response_id,revision,subtlex_id,kuperman_id), 
-            by = c("id" = "cue_response_id"))
-
-cues_responses_tbl3 <- cues_response_maps3 %>%
-  select(cue,response,revision,kuperman_id,subtlex_id) %>%
-  mutate(study_id = 3)
+            by = c("cue_response_id")) %>%
+  mutate(study_id = 3,
+         response_order = 1)
 
 
 
-all_cues_responses <- rbind(cues_responses_tbl,cues_responses_tbl2,cues_responses_tbl3)
+
+
+all_cues_responses <- rbind(cues_response_maps1,cues_response_maps2,cues_response_maps3)
 write.csv(all_cues_responses, "data/studyWise_cues_responses.csv")
 ### Clean dupes
 cleaned <- read.csv("clean_dups.csv") %>%
