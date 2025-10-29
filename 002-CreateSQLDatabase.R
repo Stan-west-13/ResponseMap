@@ -75,8 +75,10 @@ response_behavior_table <- d %>%
     cue_study_table %>% select(cue_study_id = id,cue,study_id),
     by = c("cue","study_id")
   ) %>%
-  select(-cue,-study_id)
+  select(-cue)
 
+
+## Table of unique responses and indexes
 responses_table <- response_behavior_table %>%
   filter(!response == "") %>%
   select(response) %>%
@@ -84,16 +86,25 @@ responses_table <- response_behavior_table %>%
   arrange(response) %>%
   mutate(id = seq_len(n()),.before = response) 
 
-response_behavior_table <- response_behavior_table %>%
+## Table of study ids and response_ids 
+response_study_table <- response_behavior_table %>%
+  select(id,response,study_id) %>%
   left_join(responses_table %>% rename(response_id = id), by = "response") %>%
-  select(id, participant, cue_study_id, response_order, response_id, -response)
+  select(-response)
+
+response_behavior_table <- response_behavior_table %>%
+  left_join(select(responses_table,response_id = id,response), by = "response") 
+
+
+
 
 cues_responses_table <- response_behavior_table %>%
   select(cue_study_id, response_id) %>%
   distinct() %>%
   arrange(cue_study_id, response_id) %>%
-  mutate(id = seq_len(n())) %>%
-  select(id, cue_study_id, response_id)
+  left_join(select(response_study_table,response_study_id = id,response_id),by="response_id") %>%
+  mutate(id = seq_len(n()),.before = cue_study_id) %>%
+  select(id, cue_study_id, response_study_id)
 
 
 response_map_table <- cues_responses_table %>%
