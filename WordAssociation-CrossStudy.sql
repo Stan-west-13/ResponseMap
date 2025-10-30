@@ -6,6 +6,11 @@ CREATE TABLE subjects (
   participant VARCHAR(255)
 );
 
+CREATE TABLE study (
+  id INTEGER PRIMARY KEY NOT NULL,
+  study TEXT
+);
+
 CREATE TABLE response_behaviors (
   id INTEGER PRIMARY KEY NOT NULL,
   response_order INTEGER NOT NULL,
@@ -149,9 +154,6 @@ CREATE TABLE subtlex (
 );
 
 
-CREATE TABLE study (
-  id INTEGER PRIMARY KEY NOT NULL,
-  study TEXT
-)
+
 
 
