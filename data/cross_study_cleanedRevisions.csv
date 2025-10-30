@@ -1,6 +1,6 @@
 id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
-9784,50,3,a ball,throw,a ball,NA,NA
-4115,20,5,a dad,daddy,a dad,NA,NA
+9784,50,3,a ball,throw,ball,938,3128
+4115,20,5,a dad,daddy,dad,471,11352
 4676,23,6,a glass of,drink,a glass of,NA,NA
 6102,30,7,a great day,have,a great day,NA,NA
 11302,58,8,a group,we,a group,NA,NA
@@ -166,8 +166,8 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 6389,31,311,ayudame,help,ayudame,NA,NA
 6390,31,312,ayudar,help,ayudar,NA,NA
 649,4,396,baño,bedroom,baño,NA,NA
-5820,29,270,babys,highchair,babies,1824,2905
-4379,22,262,babmi,deer,babmi,NA,NA
+5820,29,270,babys,highchair,baby,391,2910
+4379,22,262,babmi,deer,bambi,NA,NA
 1476,8,264,baby bird,bird,baby,391,2910
 2545,13,700,buy baby,buy,baby,391,2910
 5881,29,1919,for baby,highchair,baby,391,2910
@@ -228,12 +228,12 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 3539,18,364,bathroim,comb,bathroom,1055,3511
 9570,49,393,baton rouge,stick,baton rouge,NA,NA
 3313,17,372,bawk,chicken,bawk,NA,NA
-3480,17,397,bbq,cook,bbq,NA,NA
-3314,17,374,bbq,chicken,bbq,NA,NA
-3854,19,397,bbq,country,bbq,NA,NA
-4129,20,397,bbq,daddy,bbq,NA,NA
-3481,17,398,bbq pit,cook,bbq pit,NA,NA
-7308,36,400,be careful,ouch,be careful,NA,NA
+3480,17,397,bbq,cook,barbecue,4973,3301
+3314,17,374,bbq,chicken,barbecue,4973,3301
+3854,19,397,bbq,country,barbecue,4973,3301
+4129,20,397,bbq,daddy,barbecue,4973,3301
+3481,17,398,bbq pit,cook,barbecue,4973,3301
+7308,36,400,be careful,ouch,careful,631,6675
 159,1,4964,the beach,alligator,beach,1455,3581
 9740,49,377,beach towel,towel,beach,1455,3581
 6558,33,433,beutiful,lady,beautiful,403,3661
@@ -241,14 +241,14 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 3316,17,388,becauuuuuse,chicken,because,130,3672
 1008,5,4965,the bed,beside,bed,500,3682
 3735,19,153,another bed,couch,bed,500,3682
-7490,37,419,bed time,pajamas,bed time,NA,NA
+7490,37,419,bed time,pajamas,bedtime,4884,3716
 833,5,422,bedside table,beside,bedside table,NA,NA
 2342,12,385,beatle,bug,beetle,13500,3747
 7309,37,421,beofre,now,before,129,3757
 835,5,431,beforward,beside,beforward,NA,NA
 10857,56,434,behind you,turn around,behind you,NA,NA
 3855,19,436,belize,country,belize,NA,NA
-10523,54,439,belly button,tummy,belly button,NA,NA
+10523,54,439,belly button,tummy,bellybutton,19267,3882
 10524,54,440,belly ring,tummy,belly ring,NA,NA
 1019,6,413,below stairs,basement,below,1847,3893
 829,5,401,be side,beside,beside,2693,3978
@@ -309,11 +309,11 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 10530,54,532,body part,tummy,body,516,4813
 215,2,532,body part,back,body,516,4813
 4108,21,522,bodyrock,dance,bodyrock,NA,NA
-1553,8,533,boe boe,bump,boe boe,NA,NA
+1553,8,533,boe boe,bump,boo boo,NA,NA
 6788,34,631,broken bone,leg,bone,2080,4914
-7325,36,641,brun,ouch,boo boo,NA,NA
-7315,36,523,bo bo,ouch,booboo,NA,NA
-7319,36,541,boo boo,ouch,booboo,NA,NA
+7325,36,641,brun,ouch,boo boo,50848,NA
+7315,36,523,bo bo,ouch,boo boo,NA,NA
+7319,36,541,boo boo,ouch,boo boo,NA,NA
 4109,21,534,boogey,dance,boogey,NA,NA
 1051,6,546,boogy,boots,boogy,4627,4948
 10863,56,553,booo,turn around,booo,NA,NA
@@ -324,7 +324,7 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 1893,43,203,bottleup,repression,bottleup,NA,NA
 1024,6,558,bottom of house,basement,bottom,1097,5130
 3324,17,561,boulion,chicken,bouillon,39781,5145
-1556,8,575,bow bow,bump,bow bow,NA,NA
+1556,8,575,bow bow,bump,boo boo,50848,NA
 9872,50,576,boy job,trash,boy job,NA,NA
 1282,7,589,brain break,break,brain break,NA,NA
 4521,22,596,bratz,doll,bratz,NA,NA
@@ -344,10 +344,10 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 8878,45,618,britta,refrigerator,britta,NA,NA
 10037,51,625,brittney spears,uhoh,brittney spears,NA,NA
 5835,29,627,brocoli,highchair,broccoli,12103,5565
-10039,51,629,broke something,uhoh,broke something,NA,NA
-1293,7,624,broken heart,break,broken heart,NA,NA
-1294,7,625,broken leg,break,broken leg,NA,NA
-1295,7,626,broken toys,break,broken toys,NA,NA
+10039,51,629,broke something,uhoh,broke,646,5577
+1293,7,624,broken heart,break,heart,450,21340
+1294,7,625,broken leg,break,leg,1227,26081
+1295,7,626,broken toys,break,toy,2886,46977
 468,3,630,brother bear,bear,brother bear,NA,NA
 6994,34,630,brother bear,moose,brother bear,NA,NA
 1910,10,588,brang,bring,brought,439,5629
