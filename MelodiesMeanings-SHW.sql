@@ -1,8 +1,14 @@
 PRAGMA foreign_keys = ON;
 
+
+CREATE TABLE subjects (
+  id INTEGER PRIMARY KEY NOT NULL,
+  participant VARCHAR(255)
+);
+
 CREATE TABLE response_behaviors (
   id INTEGER PRIMARY KEY NOT NULL,
-  participant VARCHAR(255) NOT NULL,
+  subject_id INTEGER NOT NULL,
   cue_id INTEGER NOT NULL,
   response_order INTEGER NOT NULL,
   response_id INTEGER NOT NULL,

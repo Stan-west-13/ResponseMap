@@ -11,6 +11,11 @@ cleaned <- read.csv("data/cross_study_cleanedRevisions.csv")
 cues_responses_archive <- read.csv("data/studyWise_cues_responses.csv")
 
 ## Prepare tables
+## Subjects table
+subjects_tbl <- response_behavior_table %>%
+  select(participant) %>%
+  unique() %>%
+  mutate(id = seq.int(n()),.before = participant)
 
 ## AoA Table
 kuperman_table <- read_csv("data/AoA_51715_words.csv") %>%
@@ -94,7 +99,8 @@ response_behavior_table <- d %>%
     cue_study_table %>% select(cue_study_id = id,cue,study_id),
     by = c("cue","study_id")
   ) %>%
-  select(-cue)
+  left_join(subjects_tbl %>% rename(subject_id = id), by = "participant") %>%
+  select(-cue,-participant)
 
 
 ## Table of unique responses and indexes
