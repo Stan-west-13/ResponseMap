@@ -224,12 +224,13 @@ dbWriteTable(con, "subtlex", subtlex_table, append = TRUE)
 dbWriteTable(con, "subjects", subjects_tbl, append = TRUE)
 dbWriteTable(con, "responses", responses_table, append = TRUE)
 dbWriteTable(con, "study", study_table, append = TRUE)
+dbWriteTable(con, "responses_study", response_study_table, append = TRUE)
+dbWriteTable(con, "cues_study", cue_study_table, append = TRUE)
 dbWriteTable(con, "response_behaviors", response_behavior_table, append = TRUE)
 dbWriteTable(con, "cues_responses", cues_responses_table, append = TRUE)
 dbWriteTable(con, "response_map", response_map_table, append = TRUE)
 dbWriteTable(con, "words_meta", words_meta_table, append = TRUE)
-dbWriteTable(con, "responses_study", response_study_table, append = TRUE)
-dbWriteTable(con, "cues_study", cue_study_table, append = TRUE)
+
 
 
 
