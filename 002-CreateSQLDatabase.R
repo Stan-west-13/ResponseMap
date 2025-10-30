@@ -72,7 +72,8 @@ cue_study_table <- cues_responses_archive %>%
   unique() %>%
   left_join(cue_table, by = "cue") %>%
   rename(cue_id = id) %>%
-  mutate(id = seq.int(n()),.before = study_id)
+  mutate(id = seq.int(n()),.before = study_id) %>%
+  select(-cue)
 
 
 
@@ -85,14 +86,18 @@ response_behavior_table <- d %>%
     response,
     study_id
   ) %>%
+  group_by(participant) %>%
+  mutate(cue_order = rep(1:60,each = 3),.before = "response") %>%
+  ungroup() %>%
   rbind(cues_responses_archive %>%
           select(participant = subject_id,
                  cue,
+                 cue_order,
                  response_order,
                  response,
                  study_id)) %>%
   mutate(
-    id = 1:nrow(.),.before = participant,
+    id = seq.int(n()),.before = participant,
     response = tolower(str_trim(response))
   ) %>%
   left_join(
@@ -121,16 +126,18 @@ response_study_table <- response_behavior_table %>%
 
 response_behavior_table <- response_behavior_table %>%
   left_join(select(responses_table,response_id = id,response), by = "response") %>%
-  left_join(select(cue_study_table,cue_study_id = id,cue_id), by = "cue_study_id")
+  left_join(select(cue_study_table,cue_study_id = id,cue_id), by = "cue_study_id") %>%
+  select(-response,-cue_study_id)
 
 
 
 
 cues_responses_table <- response_behavior_table %>%
-  select(cue_study_id,response_id,cue_id,study_id) %>%
+  select(response_id,cue_id,study_id) %>%
   left_join(select(response_study_table, response_study_id = id,response_id,study_id), by = c("response_id","study_id")) %>%
+  left_join(select(cue_study_table, cue_study_id = id,cue_id,study_id), by = c("cue_id","study_id")) %>%
   mutate(id = seq.int(n()),.before = cue_study_id) %>%
-  select(id,cue_study_id,response_study_id,cue_id,response_id)
+  select(id,cue_study_id,response_study_id)
 
 
 response_map_table <- cues_responses_table %>%
