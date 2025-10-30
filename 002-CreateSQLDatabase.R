@@ -9,16 +9,28 @@ d <- read.csv("data/Metadata_MM_2025-10-22.csv") %>%
 cleaned <- read.csv("data/cross_study_cleanedRevisions.csv")
 
 cues_responses_archive <- read.csv("data/studyWise_cues_responses.csv")
+
 ## Prepare tables
 
 ## AoA Table
 kuperman_table <- read_csv("data/AoA_51715_words.csv") %>%
+  select(Word, aoa = AoA_Kup_lem) %>%
+  unique() %>%
   mutate(
     id = seq_len(n()),
     word = tolower(Word)
   ) %>%
-  select(id, word, aoa = AoA_Kup_lem) %>%
   drop_na()
+
+
+cleaned_kup <- cleaned %>%
+  select(word = response, id = kuperman_id) %>%
+  unique() %>%
+  na.omit() %>%
+  left_join(select(kuperman_table,-word), by = "id")
+
+kuperman_table <- rbind(kuperman_table,cleaned_kup) %>%
+  unique()
 
 ## Word Frequency Table
 subtlex_table <- read_csv("data/SUBTLEXusfrequencyabove1.csv") %>%
@@ -29,7 +41,14 @@ subtlex_table <- read_csv("data/SUBTLEXusfrequencyabove1.csv") %>%
   select(id, word, Lg10WF,Lg10CD) %>%
   drop_na()
 
+cleaned_sub <- cleaned %>%
+  select(word = response, id = subtlex_id) %>%
+  unique() %>%
+  na.omit() %>%
+  left_join(select(subtlex_table,-word), by = "id")
 
+subtlex_table <- rbind(subtlex_table,cleaned_sub) %>%
+  unique()
 
 ## Cues table
 cue_table <- cues_responses_archive %>%
@@ -88,9 +107,11 @@ responses_table <- response_behavior_table %>%
 
 ## Table of study ids and response_ids 
 response_study_table <- response_behavior_table %>%
-  select(id,response,study_id) %>%
+  select(response,study_id) %>%
+  distinct() %>%
   left_join(responses_table %>% rename(response_id = id), by = "response") %>%
-  select(-response)
+  mutate(id = seq.int(n()),.before = response) %>%
+  select(-response) 
 
 response_behavior_table <- response_behavior_table %>%
   left_join(select(responses_table,response_id = id,response), by = "response") %>%
@@ -100,14 +121,23 @@ response_behavior_table <- response_behavior_table %>%
 
 
 cues_responses_table <- response_behavior_table %>%
-  select(cue_study_id,response_id) %>%
-  left_join(select(response_study_table, response_study_id = id,response_id), by = "response_id")
+  select(cue_study_id,response_id,cue_id,study_id) %>%
+  left_join(select(response_study_table, response_study_id = id,response_id,study_id), by = c("response_id","study_id")) %>%
+  mutate(id = seq.int(n()),.before = cue_study_id) %>%
+  select(id,cue_study_id,response_study_id,cue_id,response_id)
 
 
 response_map_table <- cues_responses_table %>%
   left_join(
+    cue_table, by = c("cue_id" = "id")
+  ) %>%
+  left_join(
     responses_table %>% rename(response_id = id),
     by = "response_id"
+  ) %>%
+  left_join(
+    unique(select(cleaned %>% filter(!is.na(revision)),response,cue,revision)),
+    by = c("cue","response")
   ) %>%
   left_join(
     kuperman_table %>% select(response = word, kuperman_id = id),
@@ -122,10 +152,10 @@ response_map_table <- cues_responses_table %>%
     cue_table %>% select(cue_id = id, response = cue),
     by = "response"
   ) %>%
-  filter(!(is.na(kuperman_id) & is.na(subtlex_id))) %>%
+ # filter(!(is.na(kuperman_id) & is.na(subtlex_id))) %>%
   rename(cue_response_id = id) %>%
-  mutate(revision = NA, researcher_id = NA, timestamp = NA, id = seq_len(n())) %>%
-  select(id, cue_response_id, kuperman_id, subtlex_id, cue_id, revision, researcher_id, timestamp, -response)
+  mutate(researcher_id = NA, timestamp = NA, id = seq_len(n())) %>%
+  select(id, cue_response_id, kuperman_id, subtlex_id, cue_id, revision, researcher_id, timestamp,-response)
 
 
 study_table <- data.frame(
@@ -136,20 +166,7 @@ study_table <- data.frame(
             "Melodies and Meanings")
 )
 
-study_responses_table <- data.frame(
-  study_id = cues_responses_archive$study_id,
-  response = cues_responses_archive$response
-) %>%
-  mutate(id = seq.int(n()),.before = study_id)
-  
 
-subjects_table <- d %>%
-  select(
-    participant,
-    condition
-  ) %>%
-  unique()
-subjects_table <- subjects_table[!subjects_table$id == 75128 & subjects_table$COND_ID == 2,]
 
 words_meta_table <- kuperman_table %>%
   select(word, kuperman_id = id) %>%
