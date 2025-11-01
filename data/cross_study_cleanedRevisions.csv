@@ -109,7 +109,7 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 4794,24,141,aniaml,elephant,animal,1380,1565
 11842,60,126,amimal,zoo,animal,1380,1565
 11847,60,145,aninmal,zoo,animal,1380,1565
-11844,60,142,aniamls,zoo,animals,1630,1567
+11844,60,142,aniamls,zoo,animal,1380,1565
 1250,29,78,anim,haiku,anime,39596,1575
 4509,22,180,annabelle,doll,annabelle,NA,NA
 10864,55,154,another person,we,another person,NA,NA
@@ -122,16 +122,16 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 1998,45,91,appartment,residence,apartment,1100,1812
 6002,30,169,apoloosa,horse,appaloosa,45585,1870
 6765,34,168,apendage,leg,appendage,25370,1899
-11655,60,211,appitizing,yum yum,appetizing,NA,NA
-2853,14,207,aplause,clap,applause,NA,NA
+11655,60,211,appitizing,yum yum,appetizing,19567,1912
+2853,14,207,aplause,clap,applause,4065,1917
 2854,14,212,applase,clap,applause,4065,1917
 4683,23,216,apple juice,drink,apple juice,NA,NA
 2857,14,218,appluase,clap,appluase,NA,NA
 214,6,102,archnid,arachnid,arachnid,35683,2022
 213,6,100,archibald,arachnid,archibald,NA,NA
-11309,58,231,are family,we,are family,NA,NA
-11310,58,232,are going,we,are going,NA,NA
-11311,58,233,are one,we,are one,NA,NA
+11309,58,231,are family,we,family,362,16852
+11310,58,232,are going,we,going,80,19880
+11311,58,233,are one,we,one,37,31114
 1780,41,104,ariana,ponytail,ariana,NA,NA
 3051,15,240,arm and hammer,clean,arm and hammer,NA,NA
 5938,29,247,arrr,grrr,arrr,NA,NA
@@ -179,8 +179,8 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 4515,22,321,babydoll,doll,babydoll,NA,NA
 1318,7,2530,in the back,behind,back,69,2933
 1319,7,2533,inback,behind,back,69,2933
-193,2,325,back aches,back,back aches,NA,NA
-194,2,326,back handspring,back,back handspring,NA,NA
+193,2,325,back aches,back,ache,8825,358
+194,2,326,back handspring,back,handspring,43411,20972
 10851,56,327,back up,turn around,back up,NA,NA
 217,2,548,book bag,back,backpack,8032,2978
 218,2,550,booksack,back,backpack,8032,2978
@@ -189,9 +189,9 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 8309,42,273,backbag,purse,backpack,8032,2978
 4382,22,277,backstrap,deer,backstrap,NA,NA
 1815,42,149,bakup,reinforcement,backup,2815,3019
-202,2,338,bacne,back,bacne,NA,NA
-10030,51,285,bad news,uhoh,bad news,NA,NA
-11855,60,286,bad smell,zoo,bad smell,NA,NA
+202,2,338,bacne,back,acne,17229,389
+10030,51,285,bad news,uhoh,news,513,30171
+11855,60,286,bad smell,zoo,smell,822,42075
 2094,10,4509,sleeping bag,bring,bag,792,3057
 7553,38,3636,pencil bag,pencil,bag,792,3057
 9866,50,468,black bag,trash,bag,792,3057
@@ -202,7 +202,7 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 5136,26,294,baitcaster,fish,baitcaster,NA,NA
 8840,45,295,bajo,short,bajo,NA,NA
 8873,45,350,baking soda,refrigerator,baking soda,NA,NA
-3311,17,301,bakkkk,chicken,bakkkk,NA,NA
+3311,17,301,bakkkk,chicken,bawk,NA,NA
 7662,38,357,baloon,party,balloon,5134,3147
 7659,38,353,ballons,party,balloon,5134,3147
 2156,11,314,ballons,bubble,balloon,5134,3147
@@ -255,16 +255,16 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 2538,13,428,bestbuy,buy,best,235,3991
 2537,13,427,best buy,buy,best buy,235,3991
 9541,48,427,best buy,store,best buy,NA,NA
-4133,20,457,best friend,daddy,bestfriend,NA,NA
-2028,10,457,best friend,call,bestfriend,NA,NA
-840,5,458,bestie,beside,bestie,NA,NA
-4134,20,458,bestie,daddy,bestie,NA,NA
-2171,50,166,bestie,shopper,bestie,NA,NA
+4133,20,457,best friend,daddy,friend,274,18691
+2028,10,457,best friend,call,friend,274,18691
+840,5,458,bestie,beside,friend,274,18691
+4134,20,458,bestie,daddy,friend,274,18691
+2171,50,166,bestie,shopper,friend,274,18691
 7888,40,2534,inbetween,people,between,443,4039
 7666,38,462,beyonce,party,beyonce,NA,NA
 2450,57,169,beyonce,umbrella,beyonce,NA,NA
 11,1,133,and beyond,above,beyond,1302,4057
-2029,10,463,bff,call,bff,NA,NA
+2029,10,463,bff,call,friend,274,18691
 2163,11,439,bid day,bubble,bid day,NA,NA
 3856,19,466,biden,country,biden,NA,NA
 649,4,440,bieber,baby,bieber,NA,NA
@@ -360,21 +360,21 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 1563,8,643,bruse,bump,bruise,7983,5653
 7326,36,643,bruse,ouch,bruise,7983,5653
 3600,18,2249,hair brush,comb,brush,2795,5665
-7497,37,645,brush teeth,pajamas,brush teeth,NA,NA
-3069,15,647,brushing teeth,clean,brushing teeth,NA,NA
-9981,51,647,brushing teeth,tongue,brushing teeth,NA,NA
+7497,37,645,brush teeth,pajamas,brush teeth,1198,45795
+3069,15,647,brushing teeth,clean,brush teeth,1198,45795
+9981,51,647,brushing teeth,tongue,brush teeth,1198,45795
 4589,23,648,bryson tiller,don't,bryson tiller,NA,NA
 8671,44,659,bufanda,scarf,bufanda,NA,NA
 11670,60,667,bum bum,yum yum,bum bum,NA,NA
-1568,8,671,bumper car,bump,bumper car,NA,NA
-1569,8,672,bumper cars,bump,bumper cars,NA,NA
+1568,8,671,bumper car,bump,bumper car,381,6602
+1569,8,672,bumper cars,bump,bumper car,381,6602
 3869,19,668,bumkin,country,bumpkin,NA,NA
 2045,47,228,bummy,roads,bumpy,10522,5887
 3299,16,677,bunjee,climb,bungee,NA,NA
 3300,16,678,bunk bed,climb,bunk bed,NA,NA
 9220,47,682,burgandy,shirt,burgundy,16279,NA
 5466,27,688,burpe,give me five!,burpee,NA,NA
-5467,27,689,burpees,give me five!,burpees,NA,NA
+5467,27,689,burpees,give me five!,burpee,NA,NA
 11791,59,4307,school bus,yellow,bus,1261,6014
 1748,8,4238,school bus,bump,bus,1261,6014
 9553,48,669,buisness,store,business,376,6038
@@ -382,13 +382,13 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 2358,12,661,bufferfly,bug,butterfly,6446,6095
 9222,47,700,button down,shirt,button down,NA,NA
 9091,46,705,by me,stand,by me,NA,NA
-1830,9,705,bye bye,bye,bye bye,NA,NA
+1830,9,705,bye bye,bye,byebye,NA,NA
 1831,9,706,byebye,bye,byebye,NA,NA
 37,1,711,cabniet,above,cabinet,4522,6187
 1328,7,2673,kaboose,behind,caboose,21134,6199
 462,3,715,caffiene,awake,caffeine,8605,6246
 2636,13,715,caillou,child,caillou,NA,NA
-8515,43,720,cakadoodldoo,rooster,cakadoodldoo,NA,NA
+8515,43,720,cakadoodldoo,rooster,cockadoodledoo,NA,NA
 2417,12,718,calcifur,cat,calcifier,NA,NA
 2041,10,725,call me,call,call me,NA,NA
 6407,32,729,callie,kitty,callie,NA,NA
@@ -404,13 +404,13 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 3874,19,746,cane fields,country,cane fields,NA,NA
 4592,23,746,can not,don't,cannot,663,6476
 9561,48,765,canseco's,store,canseco's,NA,NA
-5578,28,749,can't do,hard,cant,15084,NA
-5581,28,767,cant do,hard,cant,15084,NA
-6137,30,736,can't,have,cant,15084,NA
-6400,31,736,can't,help,cant,15084,NA
-11479,59,736,can't,would,cant,15084,NA
-4593,23,748,can't,don't,cant,15084,NA
-5577,28,748,can't,hard,cant,15084,NA
+5578,28,749,can't do,hard,cannot,663,6476
+5581,28,767,cant do,hard,cannot,663,6476
+6137,30,736,can't,have,cannot,663,6476
+6400,31,736,can't,help,cannot,663,6476
+11479,59,736,can't,would,cannot,663,6476
+4593,23,748,can't,don't,cannot,663,6476
+5577,28,748,can't,hard,cannot,663,6476
 229,2,753,cant see,back,cant see,NA,NA
 11273,57,768,canvus,white,canvas,7091,6511
 10241,52,772,captain underpants,underpants,captain,1089,6578
@@ -427,15 +427,15 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 10147,52,784,carras,touch,caress,NA,NA
 8326,42,794,carmex,purse,carmex,NA,NA
 9041,46,780,carnvial,ride,carnival,6649,6723
-5024,25,778,carniverous,flower,carniveros,NA,NA
+5024,25,778,carniverous,flower,carnivorous,21568,6728
 673,4,800,carraige,baby,carriage,5389,6765
 2417,56,254,carrage,turncoat,carriage,5389,6765
 3877,19,786,carrie underwood,country,carrie underwood,NA,NA
 6029,30,805,carrott,horse,carrot,8377,6773
 5843,29,809,carseat,highchair,carseat,NA,NA
 9695,48,4421,shopping cart,store,cart,4375,6783
-4859,24,791,cartiladge,ear,cartilage,NA,NA
-10692,55,801,cat food,tuna,cat food,NA,NA
+4859,24,791,cartiladge,ear,cartilage,18961,6789
+10692,55,801,cat food,tuna,cat,1371,6891
 8142,41,805,catipiller,plant,caterpillar,18058,6961
 2370,12,827,caterpiller,bug,caterpillar,18058,6961
 7141,36,821,cat nap,nap,catnap,32789,6983
@@ -443,7 +443,7 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 11278,57,832,caucasion,white,caucasian,8609,NA
 40,1,961,cieling,above,ceiling,4163,7077
 2744,14,846,celerbration,cake,celebration,3655,7086
-8143,41,821,cell wall,plant,cell wall,NA,NA
+8143,41,821,cell wall,plant,cell,1326,7101
 9566,48,842,celcius,store,celsius,26134,NA
 7840,39,4,a cent,penny,cent,4086,7135
 7690,39,3466,one cent,penny,cent,4086,7135
@@ -469,15 +469,15 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 1061,6,868,chemical plant,boots,chemical plant,NA,NA
 3880,19,877,chewing tobacco,country,chewing tobacco,NA,NA
 6676,32,878,chewy candy,lollipop,chewy candy,NA,NA
-3339,17,908,chic fil a,chicken,chic fil a,NA,NA
+3339,17,908,chic fil a,chicken,chick-fil-a,NA,NA
 8502,43,266,baby chick,rooster,chick,2333,7592
 8518,43,881,chcik,rooster,chick,2333,7592
-3341,17,910,chick fil a,chicken,chick fil a,NA,NA
-5213,26,884,chickfila,food,chickfila,NA,NA
-6822,33,884,chickfila,lunch,chickfila,NA,NA
-3346,17,916,chickfila,chicken,chickfila,NA,NA
-3347,17,917,chickfilla,chicken,chickfilla,NA,NA
-3348,17,918,chickfla,chicken,chickfla,NA,NA
+3341,17,910,chick fil a,chicken,chick-fil-a,NA,NA
+5213,26,884,chickfila,food,chick-fil-a,NA,NA
+6822,33,884,chickfila,lunch,chick-fil-a,NA,NA
+3346,17,916,chickfila,chicken,chick-fil-a,NA,NA
+3347,17,917,chickfilla,chicken,chick-fil-a,NA,NA
+3348,17,918,chickfla,chicken,chick-fil-a,NA,NA
 2640,13,887,childfree,child,childfree,NA,NA
 11682,60,897,chinese food,yum yum,chinese food,NA,NA
 3107,16,930,chipotle,cheese,chipotle,NA,NA
@@ -529,11 +529,11 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 8807,44,5239,trench coat,scarf,coat,1480,8435
 4863,24,995,cochlea,ear,cochlear,42631,NA
 3499,17,998,cocinar,cook,cocinar,NA,NA
-8527,43,1015,cock a doodle doo,rooster,cock a doodle doo,NA,NA
-8528,43,1016,cocka doodle doo,rooster,cocka doodle doo,NA,NA
-8529,43,1017,cockadoodle,rooster,cockadoodle,NA,NA
+8527,43,1015,cock a doodle doo,rooster,cockadoodledoo,NA,NA
+8528,43,1016,cocka doodle doo,rooster,cockadoodledoo,NA,NA
+8529,43,1017,cockadoodle,rooster,cockadoodledoo,NA,NA
 8530,43,1018,cockadoodledoo,rooster,cockadoodledoo,NA,NA
-8531,43,1019,cockadoodledoooooo,rooster,cockadoodledoooooo,NA,NA
+8531,43,1019,cockadoodledoooooo,rooster,cockadoodledoo,NA,NA
 3926,20,1026,coffe,cup,coffee,673,8564
 4007,20,3426,of coffee,cup,coffee,673,8564
 433,12,333,cofee,cafe,coffee,673,8564
@@ -547,11 +547,11 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 3113,16,1033,colby jsck,cheese,colby jsck,NA,NA
 8688,44,1036,cold weather,scarf,cold,583,8630
 28,1,1009,cold blooded,alligator,cold blooded,NA,NA
-11700,59,1035,cold play,yellow,cold play,NA,NA
+11700,59,1035,cold play,yellow,coldplay,NA,NA
 11701,59,1037,coldplay,yellow,coldplay,NA,NA
-598,16,338,colab,combined,collab,20324,8643
-2042,10,726,callaborate,call,collaborate,NA,NA
-11323,58,1010,collaberative,we,collaborative,NA,NA
+598,16,338,colab,combined,collaborate,20324,8643
+2042,10,726,callaborate,call,collaborate,20324,8643
+11323,58,1010,collaberative,we,collaborate,20324,8643
 8689,44,1027,colorfull,puzzle,colorful,7446,8747
 472,3,1044,coloful,awake,colorful,7446,8747
 8689,44,1044,coloful,scarf,colorful,7446,8747
@@ -563,15 +563,15 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 7514,37,1039,comftorable,pajamas,comfortable,NA,NA
 10258,52,1104,confortable,underpants,comfortable,1109,8818
 677,4,1040,comfty,bedroom,comfy,9155,8826
-3701,18,1040,comfty,couch,comfy,NA,NA
-7515,37,1040,comfty,pajamas,comfy,NA,NA
-7517,37,1054,comphy,pajamas,comfy,NA,NA
+3701,18,1040,comfty,couch,comfy,9155,8826
+7515,37,1040,comfty,pajamas,comfy,9155,8826
+7517,37,1054,comphy,pajamas,comfy,9155,8826
 10257,52,1063,comic book,underpants,comic,4630,8827
 233,2,1065,coming up,after,coming,194,8831
 2375,55,350,communicater,teller,communicate,4247,8941
 2218,51,352,compagnion,steed,companion,5317,8976
-6414,31,1059,comprehention,help,comprehension,NA,NA
-2895,14,1075,congradulation,clap,congratulations,NA,NA
+6414,31,1059,comprehention,help,comprehension,14093,9118
+2895,14,1075,congradulation,clap,congratulations,873,9433
 602,16,368,conjuned,combined,conjoined,37800,NA
 475,3,1093,concious,awake,conscious,4963,9520
 238,2,1127,continous,after,continuous,10459,9767
@@ -594,13 +594,13 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 11489,59,1127,could you,would,could you,NA,NA
 11491,59,1129,coulda,would,coulda,NA,NA
 4608,23,1169,couldn't,don't,couldnt,35994,NA
-11490,59,1128,could've,would,could've,NA,NA
+11490,59,1128,could've,would,could,82,10227
 7148,36,1013,cocer,nap,cover,724,10439
 8702,44,1145,covid,puzzle,covid,NA,NA
 6044,30,1183,cow boy,horse,cowboy,3229,10465
 3895,19,1148,cowboy hat,country,cowboy hat,NA,NA
 7795,40,1009,co workers,people,coworkers,12607,10483
-1080,6,1152,coy bow,boots,coy bow,NA,NA
+1080,6,1152,coy bow,boots,cowboy,3229,10465
 7519,37,1155,cozzy,pajamas,cozy,5261,NA
 7156,36,1190,cozey,nap,cozy,5261,10508
 11687,60,1158,crab rangoon,yum yum,crab rangoon,NA,NA
@@ -618,14 +618,14 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 37,1,1194,crocs,alligator,crocs,15866,10817
 1081,6,1194,crocs,boots,crocs,15866,10817
 9256,47,1196,crop top,shirt,crop top,NA,NA
-8495,43,1200,cross body,purse,cross body,NA,NA
+8495,43,1200,cross body,purse,crossbody,NA,NA
 10665,54,1233,cross country,walk,cross country,NA,NA
 8496,43,1201,crossbody,purse,crossbody,NA,NA
 8347,42,1235,crossbody,purse,crossbody,NA,NA
 2103,48,404,crosscountry,runner,crosscountry,NA,NA
 10666,54,1234,cross walk,walk,crosswalk,24225,10884
 10366,53,1207,crowley,tractor,crowley,NA,NA
-717,18,416,cruse,crusader,cru,NA,NA
+717,18,416,cruse,crusader,cruse,NA,NA
 2251,11,1209,cruch,carrots,crunch,8301,10968
 2252,11,1216,cruncg,carrots,crunch,8301,10968
 6274,31,1246,cruch,ice,crunch,8301,10968
@@ -656,16 +656,16 @@ id,cue_id,response_id,response,cue,revision,subtlex_id,kuperman_id
 44,1,1306,deep south louisiana,alligator,deep south louisiana,NA,NA
 9111,46,1354,deer stand,stand,deer,5352,11840
 10371,53,1308,deere,tractor,deere,NA,NA
-2261,11,1323,delious,carrots,delicious,NA,NA
-3509,17,1316,delecious,cook,delicious,NA,NA
-9453,48,1319,delicous,spaghetti,delicious,NA,NA
-9458,48,1570,elise,spaghetti,delicious,NA,NA
-11690,60,1319,delicous,yum yum,delicious,NA,NA
+2261,11,1323,delious,carrots,delicious,2081,12043
+3509,17,1316,delecious,cook,delicious,2081,12043
+9453,48,1319,delicous,spaghetti,delicious,2081,12043
+9458,48,1570,elise,spaghetti,delicious,2081,12043
+11690,60,1319,delicous,yum yum,delicious,2081,12043
 5176,26,1360,delicous,fish,delicious,2081,12043
 7009,35,1360,delicous,muffin,delicious,2081,12043
 5859,29,1361,deliquent,highchair,delinquent,13136,12056
-3511,17,1324,delish,cook,delish,NA,NA
-11693,60,1324,delish,yum yum,delish,NA,NA
+3511,17,1324,delish,cook,delicious,2081,12043
+11693,60,1324,delish,yum yum,delicious,2081,12043
 1580,36,454,deoderant,odor,deodorant,11544,12239
 1582,36,456,deordant,odor,deodorant,11544,12239
 1583,36,457,deordorant,odor,deodorant,11544,12239

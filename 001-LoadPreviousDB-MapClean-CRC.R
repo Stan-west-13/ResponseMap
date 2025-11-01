@@ -116,7 +116,6 @@ tmp <- cue_resp_map |>
 
 tmp |> mutate(x = old_resp == response) |>  pull(x) |> all() 
 
-map(tbls$responses, ~.x |> filter(response == "toyota"))
 
 ## Revise indices in RESPONSE_MAP ---
 resp_map <- tbls$response_map |>
@@ -142,6 +141,9 @@ inconsistent_mapping <- resp_map |>
   group_by(response_id) |>
   filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
 
+inconsistent_mapping |>
+  filter(revision == "bed time")
+
 resp_map |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
   left_join(distinct_resps |> rename(response_id=id)) |>
@@ -155,7 +157,214 @@ resp_map |>
     subtlex_id = replace(subtlex_id, revision == "dad", 471),
     kuperman_id = replace(kuperman_id, revision == "dad", 11352)
   ) |>
-  filter(response == "a dad")
+  mutate(
+    revision = replace(revision, revision == "babies", "baby"),
+    subtlex_id = replace(subtlex_id, revision == "baby", 391),
+    kuperman_id = replace(kuperman_id, revision == "baby", 2910)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "babmi", "bambi")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bed time", "bedtime"),
+    subtlex_id = replace(subtlex_id, revision == "bedtime", 4884),
+    kuperman_id = replace(kuperman_id, revision == "bedtime", 3716)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "belly button", "bellybutton"),
+    subtlex_id = replace(subtlex_id, revision == "bellybutton", 19267),
+    kuperman_id = replace(kuperman_id, revision == "bellybutton", 3882)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "boe boe", "boo boo"),
+    revision = replace(revision, revision == "booboo", "boo boo"),
+    revision = replace(revision, revision == "bow bow", "boo boo"),
+    subtlex_id = replace(subtlex_id, revision == "boo boo", 50848)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "broke something", "broke"),
+    subtlex_id = replace(subtlex_id, revision == "broke", 646),
+    kuperman_id = replace(kuperman_id, revision == "broke", 5577)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "broken heart", "heart"),
+    subtlex_id = replace(subtlex_id, revision == "heart", 450),
+    kuperman_id = replace(kuperman_id, revision == "heart", 21340)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "broken leg", "leg"),
+    subtlex_id = replace(subtlex_id, revision == "leg", 1227),
+    kuperman_id = replace(kuperman_id, revision == "leg", 26081)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "broken toys", "toy"),
+    subtlex_id = replace(subtlex_id, revision == "toy", 2886),
+    kuperman_id = replace(kuperman_id, revision == "toy", 46977)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "animals", "animal"),
+    subtlex_id = replace(subtlex_id, revision == "animal", 1380),
+    kuperman_id = replace(kuperman_id, revision == "animal", 1565)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "appetizing", 19567),
+    kuperman_id = replace(kuperman_id, revision == "appetizing", 1912)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "applause", 4065),
+    kuperman_id = replace(kuperman_id, revision == "applause", 1917)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "are family", "family"),
+    subtlex_id = replace(subtlex_id, revision == "family", 362),
+    kuperman_id = replace(kuperman_id, revision == "family", 16852)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "are going", "going"),
+    subtlex_id = replace(subtlex_id, revision == "going", 80),
+    kuperman_id = replace(kuperman_id, revision == "going", 19880)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "are one", "one"),
+    subtlex_id = replace(subtlex_id, revision == "one", 37),
+    kuperman_id = replace(kuperman_id, revision == "one", 31114)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "back aches", "ache"),
+    subtlex_id = replace(subtlex_id, revision == "ache", 8825),
+    kuperman_id = replace(kuperman_id, revision == "ache", 358)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "back handspring", "handspring"),
+    subtlex_id = replace(subtlex_id, revision == "handspring", 43411),
+    kuperman_id = replace(kuperman_id, revision == "", 20972)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bacne", "acne"),
+    subtlex_id = replace(subtlex_id, revision == "acne", 17229),
+    kuperman_id = replace(kuperman_id, revision == "acne", 389)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bad news", "news"),
+    subtlex_id = replace(subtlex_id, revision == "news", 513),
+    kuperman_id = replace(kuperman_id, revision == "news", 30171)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bad smell", "smell"),
+    subtlex_id = replace(subtlex_id, revision == "smell", 822),
+    kuperman_id = replace(kuperman_id, revision == "smell", 42075)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bakkkk", "bawk")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bestfriend", "friend"),
+    revision = replace(revision, revision == "bestie", "friend"),
+    revision = replace(revision, revision == "bff", "friend"),
+    subtlex_id = replace(subtlex_id, revision == "friend", 274),
+    kuperman_id = replace(kuperman_id, revision == "friend", 18691)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "brushing teeth", "brush teeth"),
+    subtlex_id = replace(subtlex_id, revision == "brush teeth", 1198),
+    kuperman_id = replace(kuperman_id, revision == "brush teeth", 45795)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bumper cars", "bumper car"),
+    subtlex_id = replace(subtlex_id, revision == "bumper car", 381),
+    kuperman_id = replace(kuperman_id, revision == "bumper car", 6602)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "burpees", "burpee")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "bye bye", "byebye")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cakadoodldoo", "cockadoodledoo"),
+    revision = replace(revision, revision == "cock a doodle doo", "cockadoodledoo"),
+    revision = replace(revision, revision == "cocka doodle doo", "cockadoodledoo"),
+    revision = replace(revision, revision == "cockadoodle", "cockadoodledoo"),
+    revision = replace(revision, revision == "cockadoodledoooooo", "cockadoodledoo"),
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cold play", "coldplay")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "carniveros", "carnivorous"),
+    subtlex_id = replace(subtlex_id, revision == "carnivorous", 21568),
+    kuperman_id = replace(kuperman_id, revision == "carnivorous", 6728)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cartilage", "cartilage"),
+    subtlex_id = replace(subtlex_id, revision == "cartilage", 18961),
+    kuperman_id = replace(kuperman_id, revision == "cartilage", 6789)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cat food", "cat"),
+    subtlex_id = replace(subtlex_id, revision == "cat", 1371),
+    kuperman_id = replace(kuperman_id, revision == "cat", 6891)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cell wall", "cell"),
+    subtlex_id = replace(subtlex_id, revision == "cell", 1326),
+    kuperman_id = replace(kuperman_id, revision == "cell", 7101)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "chic fil a", "chick-fil-a"),
+    revision = replace(revision, revision == "chick fil a", "chick-fil-a"),
+    revision = replace(revision, revision == "chickfila", "chick-fil-a"),
+    revision = replace(revision, revision == "chickfilla", "chick-fil-a"),
+    revision = replace(revision, revision == "chickfla", "chick-fil-a")
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "collab", "collaborate"),
+    revision = replace(revision, revision == "collaborative", "collaborate"),
+    subtlex_id = replace(subtlex_id, revision == "collaborate", 20324),
+    kuperman_id = replace(kuperman_id, revision == "", 8643)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "comfy", 9155),
+    kuperman_id = replace(kuperman_id, revision == "comfy", 8826)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "comprehension", 14093),
+    kuperman_id = replace(kuperman_id, revision == "comprehension", 9118)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "congratulations", 873),
+    kuperman_id = replace(kuperman_id, revision == "congratulations", 9433)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cant", "cannot"),
+    subtlex_id = replace(subtlex_id, revision == "cannot", 663),
+    kuperman_id = replace(kuperman_id, revision == "cannot", 6476)
+  ) |>
+  mutate(
+    subtlex_id = replace(subtlex_id, revision == "delicious", 2081),
+    kuperman_id = replace(kuperman_id, revision == "delicious", 12043)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "could've", "could"),
+    subtlex_id = replace(subtlex_id, revision == "could", 82),
+    kuperman_id = replace(kuperman_id, revision == "could", 10227)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "coy bow", "cowboy"),
+    subtlex_id = replace(subtlex_id, revision == "cowboy", 3229),
+    kuperman_id = replace(kuperman_id, revision == "cowboy", 10465)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cross body", "crossbody"),
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "cru", "cruse"),
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "delish", "delicious"),
+    subtlex_id = replace(subtlex_id, revision == "delicious", 2081),
+    kuperman_id = replace(kuperman_id, revision == "delicious", 12043)
+  )
   
 # Load Stan's revisions ----
 stan_rev <- readr::read_csv("data/cross_study_cleanedRevisions.csv")
