@@ -142,8 +142,24 @@ inconsistent_mapping <- resp_map |>
   group_by(response_id) |>
   filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
 
+resp_map |>
+  left_join(distinct_cues |> rename(cue_id=id)) |>
+  left_join(distinct_resps |> rename(response_id=id)) |>
+  mutate(
+    revision = replace(revision, revision == "a ball", "ball"),
+    subtlex_id = replace(subtlex_id, revision == "ball", 938),
+    kuperman_id = replace(kuperman_id, revision == "ball", 3128)
+  ) |>
+  mutate(
+    revision = replace(revision, revision == "a dad", "dad"),
+    subtlex_id = replace(subtlex_id, revision == "dad", 471),
+    kuperman_id = replace(kuperman_id, revision == "dad", 11352)
+  ) |>
+  filter(response == "a dad")
+  
 # Load Stan's revisions ----
 stan_rev <- readr::read_csv("data/cross_study_cleanedRevisions.csv")
+
 inconsistent_mapping |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
   left_join(distinct_resps |> rename(response_id=id)) |>
@@ -159,7 +175,7 @@ inconsistent_mapping |>
       distinct()
     ) |>
   select(study_id:revision, cue:stan_kuperman_id) |>
-  filter(cue == "daddy")
+  filter(response == "a ball")
 
 cue_resp_words <- cue_resp_map |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
