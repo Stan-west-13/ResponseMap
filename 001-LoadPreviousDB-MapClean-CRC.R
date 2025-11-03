@@ -136,15 +136,8 @@ resp_map <- tbls$response_map |>
   mutate(new_id = seq_len(n())) |>
   relocate(new_id, old_id, study_id, cue_id, response_id)
 
-inconsistent_mapping <- resp_map |>
-  arrange(response_id) |>
-  group_by(response_id) |>
-  filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
-
-inconsistent_mapping |>
-  filter(revision == "bed time")
-
-resp_map |>
+resp_map_orig <- resp_map
+resp_map <- resp_map_orig |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
   left_join(distinct_resps |> rename(response_id=id)) |>
   mutate(
@@ -366,10 +359,15 @@ resp_map |>
     kuperman_id = replace(kuperman_id, revision == "delicious", 12043)
   )
   
+inconsistent_mapping <- resp_map |>
+  arrange(response_id) |>
+  group_by(response_id) |>
+  filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
+
 # Load Stan's revisions ----
 stan_rev <- readr::read_csv("data/cross_study_cleanedRevisions.csv")
 
-inconsistent_mapping |>
+xx <- inconsistent_mapping |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
   left_join(distinct_resps |> rename(response_id=id)) |>
   left_join(
@@ -382,9 +380,10 @@ inconsistent_mapping |>
         stan_kuperman_id = kuperman_id
       ) |>
       distinct()
-    ) |>
-  select(study_id:revision, cue:stan_kuperman_id) |>
-  filter(response == "a ball")
+  ) |>
+  ungroup() |>
+  filter(revision != stan_revision | subtlex_id != stan_subtlex_id | kuperman_id != stan_kuperman_id) |>
+  select(cue, response, revision, subtlex_id, kuperman_id, starts_with("stan_"))
 
 cue_resp_words <- cue_resp_map |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
