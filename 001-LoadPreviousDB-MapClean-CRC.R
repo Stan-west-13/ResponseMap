@@ -117,7 +117,7 @@ tmp <- cue_resp_map |>
 tmp |> mutate(x = old_resp == response) |>  pull(x) |> all() 
 
 
-## Revise indices in RESPONSE_MAP ---
+# Revise indices in RESPONSE_MAP ----
 resp_map <- tbls$response_map |>
   list_rbind(names_to = "study_id") |>
   select(
@@ -136,6 +136,37 @@ resp_map <- tbls$response_map |>
   mutate(new_id = seq_len(n())) |>
   relocate(new_id, old_id, study_id, cue_id, response_id)
 
+
+# Revise indices in RESPONSE_BEHAVIORS ----
+tbls$response_behaviors[[3]] <- tbls$response_behaviors[[3]] |>
+  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_id")) |>
+  mutate(subject_id = as.integer(subject_id))
+
+response_behaviors <- tbls$response_behaviors |>
+  list_rbind(names_to = "study_id") |>
+  select(
+    study_id,
+    old_id = id,
+    subject_id,
+    old_cue_id=cue_id,
+    old_response_id=response_id,
+    cue_order,
+    response_order
+  ) |>
+  left_join(
+    id_map_cues |> select(study_id, old_cue_id=old_id, cue_id=new_id),
+    by = join_by(study_id, old_cue_id)
+  ) |>
+  left_join(
+    id_map_resps |> select(study_id, old_response_id=old_id, response_id=new_id),
+    by = join_by(study_id, old_response_id)
+  ) |>
+  mutate(id = seq_len(n())) |>
+  select(id, study_id, subject_id, cue_id, response_id, cue_order, response_order)
+
+
+
+# Revise mappings ----
 resp_map_orig <- resp_map
 resp_map <- resp_map_orig |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
@@ -359,14 +390,19 @@ resp_map <- resp_map_orig |>
     kuperman_id = replace(kuperman_id, revision == "delicious", 12043)
   )
   
+
+# An inconsistent mapping is any response ID with multiple different revisions,
+# kuperman_id, or subtlex_id
 inconsistent_mapping <- resp_map |>
   arrange(response_id) |>
   group_by(response_id) |>
   filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
 
+
 # Load Stan's revisions ----
 stan_rev <- readr::read_csv("data/cross_study_cleanedRevisions.csv")
 
+# Merge Stan's revisions into the inconsistent mappings
 xx <- inconsistent_mapping |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
   left_join(distinct_resps |> rename(response_id=id)) |>
@@ -382,52 +418,57 @@ xx <- inconsistent_mapping |>
       distinct()
   ) |>
   ungroup() |>
-  filter(revision != stan_revision | subtlex_id != stan_subtlex_id | kuperman_id != stan_kuperman_id) |>
   select(cue, response, revision, subtlex_id, kuperman_id, starts_with("stan_"))
 
-cue_resp_words <- cue_resp_map |>
-  left_join(distinct_cues |> rename(cue_id=id)) |>
-  left_join(distinct_resps |> rename(response_id=id))
+# Write out inconsistent mappings for further reconciliation
+readr::write_csv(xx, "inconsistent-mappings.csv")
 
-cue_resp_words |>
-  filter(response == "toyota")
+# Read back the reconciles mappings, without inconsistencies
+revised_mapping <- readr::read_csv("inconsistent-mappings-reconciled.csv")
 
-### Clean dupes
-cleaned <- read.csv("clean_dups.csv") %>%
-  select(-n_revision)
+resp_map_revised <- resp_map |>
+  select(
+    id=new_id,
+    study_id,
+    cue_id,
+    response_id,
+    researcher_id,
+    timestamp,
+    cue, response
+  ) |>
+  left_join(
+    revised_mapping |>
+      select(
+        cue,
+        response,
+        revision=new_revision,
+        subtlex_id=new_subtlex_id,
+        kuperman_id=new_kuperman_id
+      ) |>
+      distinct()
+  ) |>
+  mutate(revision = if_else(response == revision, NA, revision))
 
-x <- resp_map |>
-  filter(!is.na(revision), duplicated(response_id)) |>
+inconsistent_mapping_check <- resp_map_revised |>
+  arrange(response_id) |>
   group_by(response_id) |>
-  mutate(n_revision = length(unique(revision))) |>
-  arrange(desc(n_revision), revision) |>
-  unique() |>
-  filter(n_revision > 1)
-
-cleaned_maps <- rbind(responsemaps_all[!responsemaps_all$rowid %in% x$rowid,-9],cleaned) %>%
-  mutate(rowid = seq(1,nrow(.),1))
-
-z <- cleaned_maps %>% 
-  select(response,revision) %>% 
-  filter(!is.na(revision)) %>% 
-  unique() %>% 
-  group_by(response) %>% 
-  summarize(n_revision = length(unique(revision)))
+  filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
 
 
-y <- cleaned_maps %>%
-  mutate(rowid = seq(1,nrow(.),1)) %>%
-  filter(!is.na(revision),!revision == "") %>%
-  group_by(response) %>%
-  mutate(n_revision = length(unique(revision))) %>%
-  arrange(desc(n_revision), revision) %>%
-  unique() %>%
-  filter(n_revision > 1) %>%
-  arrange(response)
+saveRDS(resp_map_revised, "tables/rds/resp-map-revised.rds")
+saveRDS(tbls$kuperman[[1]], "tables/rds/kuperman.rds")
+saveRDS(tbls$subtlex[[1]], "tables/rds/subtlex.rds")
 
-cleaned2 <- read.csv("cleaned_2.csv") %>%
-  select(-n_revision)
+    
+# Write tables ----
+new_tbls <- list(
+  cues = distinct_cues,
+  cues_responses = cue_resp_map,
+  decisions = tbls$decisions[[1]], # all the same
+  kuperman = tbls$kuperman[[1]], # all the same
+  subtlex = tbls$subtlex[[1]], # all the same
+  researchers = tbls$researchers |> list_rbind() |> distinct() |> mutate(id = seq_len(n()))
+)
 
-cleaned_maps <- rbind(cleaned_maps[!cleaned_maps$rowid %in% y$rowid,-9],cleaned2[,-9]) 
 
-write.csv(cleaned_maps, "data/cross_study_cleanedRevisions.csv")
+tbls$response_behaviors[[1]]
