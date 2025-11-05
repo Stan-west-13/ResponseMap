@@ -426,6 +426,14 @@ readr::write_csv(xx, "inconsistent-mappings.csv")
 # Read back the reconciles mappings, without inconsistencies
 revised_mapping <- readr::read_csv("inconsistent-mappings-reconciled.csv")
 
+resp_map |>
+  group_by(response_id) |>
+  filter(
+    if_any(c(kuperman_id, subtlex_id), is.na) |
+      if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1)
+  ) |>
+  ungroup()
+
 resp_map_revised <- resp_map |>
   select(
     id=new_id,
@@ -434,26 +442,29 @@ resp_map_revised <- resp_map |>
     response_id,
     researcher_id,
     timestamp,
-    cue, response
+    cue,
+    response,
+    old_revision=revision,
+    old_subtlex_id=subtlex_id,
+    old_kuperman_id=kuperman_id
   ) |>
   left_join(
     revised_mapping |>
       select(
         cue,
         response,
-        revision=new_revision,
-        subtlex_id=new_subtlex_id,
-        kuperman_id=new_kuperman_id
+        new_revision,
+        new_subtlex_id,
+        new_kuperman_id
       ) |>
       distinct()
   ) |>
+  mutate(
+    revision = if_else(is.na(new_revision), old_revision, new_revision),
+    subtlex_id = if_else(is.na(new_subtlex_id), old_subtlex_id, new_subtlex_id),
+    kuperman_id = if_else(is.na(new_kuperman_id), old_kuperman_id, new_kuperman_id)
+  ) |>
   mutate(revision = if_else(response == revision, NA, revision))
-
-inconsistent_mapping_check <- resp_map_revised |>
-  arrange(response_id) |>
-  group_by(response_id) |>
-  filter(if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1))
-
 
 saveRDS(resp_map_revised, "tables/rds/resp-map-revised.rds")
 saveRDS(tbls$kuperman[[1]], "tables/rds/kuperman.rds")
