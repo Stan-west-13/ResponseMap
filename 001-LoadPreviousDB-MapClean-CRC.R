@@ -4,8 +4,6 @@ library(dplyr)
 library(purrr)
 library(stringr)
 library(tidyr)
-source("R/dbInsertHelpers.R")
-source("R/dbSelectHelpers.R")
 source("R/read_all_tables.R")
 
 
@@ -16,10 +14,29 @@ db_files <- c(
   "Word-AssociationRT.db"
 )
 
+db <- dbConnect(RSQLite::SQLite(), db_files[[1]])
+tbl_list <- dbListTables(db)
+dbDisconnect(db)
+
 
 # Load from database ----
 tbls <- read_all_tables(db_files)
 
+# Concatenate 
+tbls$subjects[[3]] <- tbls$subjects[[3]] |>
+  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code")) |>
+  mutate(subject_id = as.integer(subject_id))
+
+subjects <- tbls$subjects |>
+  list_rbind() |>
+  mutate(id = seq_len(n()))
+
+
+# Reconcile RESEARCHERS indices across databases ----
+distinct_researchers <- tbls$researchers |>
+  list_rbind() |>
+  distinct() |>
+  mutate(id = seq_len(n()))
 
 # Reconcile CUE indices across databases ----
 all_cues <- list_rbind(tbls$cues, names_to = "study_id") |>
@@ -139,11 +156,13 @@ resp_map <- tbls$response_map |>
 
 # Revise indices in RESPONSE_BEHAVIORS ----
 tbls$response_behaviors[[3]] <- tbls$response_behaviors[[3]] |>
-  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_id")) |>
-  mutate(subject_id = as.integer(subject_id))
+  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code")) |>
+  mutate(subject_code = as.integer(subject_code))
 
 response_behaviors <- tbls$response_behaviors |>
   list_rbind(names_to = "study_id") |>
+  left_join(subjects |> select(subject_id=id, study_code, subject_code)) |>
+  select(-study_code, -subject_code) |>
   select(
     study_id,
     old_id = id,
@@ -473,12 +492,17 @@ saveRDS(tbls$subtlex[[1]], "tables/rds/subtlex.rds")
     
 # Write tables ----
 new_tbls <- list(
-  cues = distinct_cues,
-  cues_responses = cue_resp_map,
-  decisions = tbls$decisions[[1]], # all the same
+  researchers = distinct_researchers,
   kuperman = tbls$kuperman[[1]], # all the same
   subtlex = tbls$subtlex[[1]], # all the same
-  researchers = tbls$researchers |> list_rbind() |> distinct() |> mutate(id = seq_len(n()))
+  decisions = tbls$decisions[[1]], # all the same
+  subject_decisions = 
+  
+  cues = distinct_cues,
+  responses = distinct_responses,
+  cues_responses = cue_resp_map,
+  response_map = resp_map_revised,
+  response_behaviors = response_behaviors,
 )
 
 
