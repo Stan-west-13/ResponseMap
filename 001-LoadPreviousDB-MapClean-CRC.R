@@ -22,21 +22,40 @@ dbDisconnect(db)
 # Load from database ----
 tbls <- read_all_tables(db_files)
 
-# Concatenate 
-tbls$subjects[[3]] <- tbls$subjects[[3]] |>
-  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code")) |>
-  mutate(subject_id = as.integer(subject_id))
 
+# Define STUDIES table ----
+studies <- tibble(
+  id = 1:3,
+  label = c("", "", "Time to Associate"),
+  abbreviation = c("", "", "TTA"),
+  description = c("", "", "")
+)
+
+
+# Concatenate SUBJECTS tables across databases ----
 subjects <- tbls$subjects |>
-  list_rbind() |>
-  mutate(id = seq_len(n()))
+  imap(~{
+    if (.y == 3) {
+      separate_wider_delim(.x, subject_id, delim = "_", names = c("study_code", "subject_code"), too_few = "align_end")
+    } else {
+      separate_wider_delim(.x, id, delim = "_", names = c("study_code", "subject_code"), too_few = "align_end")
+    }
+  }) |>
+  list_rbind(names_to = "study_id") |>
+  mutate(id = seq_len(n())) |>
+  relocate(id)
 
+
+# Concatenate SUBJECT_DECISIONS ----
+subject_decisions <- tbls$subject_decisions |>
+  list_rbind(names_to = "study_id")
 
 # Reconcile RESEARCHERS indices across databases ----
 distinct_researchers <- tbls$researchers |>
   list_rbind() |>
   distinct() |>
   mutate(id = seq_len(n()))
+
 
 # Reconcile CUE indices across databases ----
 all_cues <- list_rbind(tbls$cues, names_to = "study_id") |>
@@ -67,13 +86,13 @@ id_map_cues <- left_join(
 all_resps <- list_rbind(tbls$responses, names_to = "study_id") |>
   rename(old_id = id)
 
-distinct_resps <- list_rbind(tbls$responses) |>
+distinct_responses <- list_rbind(tbls$responses) |>
   distinct(response) |>
   arrange(response) |>
   mutate(id = seq_len(n())) |>
   relocate(id)
 
-id_map_resps <- left_join(all_resps, rename(distinct_resps, new_id = id)) |>
+id_map_resps <- left_join(all_resps, rename(distinct_responses, new_id = id)) |>
   relocate(new_id, .after = old_id)
 
 
@@ -127,7 +146,7 @@ tmp <- cue_resp_map |>
   }) |>
   list_rbind() |>
   left_join(
-    distinct_resps |> rename(response_id=id),
+    distinct_responses |> rename(response_id=id),
     by = join_by(response_id)
   )
 
@@ -155,14 +174,13 @@ resp_map <- tbls$response_map |>
 
 
 # Revise indices in RESPONSE_BEHAVIORS ----
-tbls$response_behaviors[[3]] <- tbls$response_behaviors[[3]] |>
-  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code")) |>
-  mutate(subject_code = as.integer(subject_code))
 
 response_behaviors <- tbls$response_behaviors |>
+  map(~{
+    separate_wider_delim(.x, subject_id, delim = "_", names = c("study_code", "subject_code"), too_few = "align_end")
+  }) |>
   list_rbind(names_to = "study_id") |>
-  left_join(subjects |> select(subject_id=id, study_code, subject_code)) |>
-  select(-study_code, -subject_code) |>
+  left_join(subjects |> select(subject_id=id, study_id, subject_code)) |>
   select(
     study_id,
     old_id = id,
@@ -189,7 +207,7 @@ response_behaviors <- tbls$response_behaviors |>
 resp_map_orig <- resp_map
 resp_map <- resp_map_orig |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
-  left_join(distinct_resps |> rename(response_id=id)) |>
+  left_join(distinct_responses |> rename(response_id=id)) |>
   mutate(
     revision = replace(revision, revision == "a ball", "ball"),
     subtlex_id = replace(subtlex_id, revision == "ball", 938),
@@ -424,7 +442,7 @@ stan_rev <- readr::read_csv("data/cross_study_cleanedRevisions.csv")
 # Merge Stan's revisions into the inconsistent mappings
 xx <- inconsistent_mapping |>
   left_join(distinct_cues |> rename(cue_id=id)) |>
-  left_join(distinct_resps |> rename(response_id=id)) |>
+  left_join(distinct_responses |> rename(response_id=id)) |>
   left_join(
     stan_rev |>
       select(
@@ -442,7 +460,7 @@ xx <- inconsistent_mapping |>
 # Write out inconsistent mappings for further reconciliation
 readr::write_csv(xx, "inconsistent-mappings.csv")
 
-# Read back the reconciles mappings, without inconsistencies
+# Read back the reconciled mappings, without inconsistencies ----
 revised_mapping <- readr::read_csv("inconsistent-mappings-reconciled.csv")
 
 resp_map |>
@@ -496,14 +514,15 @@ new_tbls <- list(
   kuperman = tbls$kuperman[[1]], # all the same
   subtlex = tbls$subtlex[[1]], # all the same
   decisions = tbls$decisions[[1]], # all the same
-  subject_decisions = 
-  
+  subjects = subjects,
+  subject_decisions = subject_decisions,
   cues = distinct_cues,
   responses = distinct_responses,
   cues_responses = cue_resp_map,
   response_map = resp_map_revised,
-  response_behaviors = response_behaviors,
+  response_behaviors = response_behaviors
 )
 
+iwalk(new_tbls, ~{readr::write_csv(.x, file.path("tables", "csv", paste0(.y, ".csv")))})
+iwalk(new_tbls, ~{saveRDS(.x, file.path("tables", "rds", paste0(.y, ".rds")))})
 
-tbls$response_behaviors[[1]]
