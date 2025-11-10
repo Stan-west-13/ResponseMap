@@ -503,13 +503,10 @@ resp_map_revised <- resp_map |>
   ) |>
   mutate(revision = if_else(response == revision, NA, revision))
 
-saveRDS(resp_map_revised, "tables/rds/resp-map-revised.rds")
-saveRDS(tbls$kuperman[[1]], "tables/rds/kuperman.rds")
-saveRDS(tbls$subtlex[[1]], "tables/rds/subtlex.rds")
-
-    
 # Write tables ----
 new_tbls <- list(
+  studies = studies,
+  studies_cues = study_cue_map,
   researchers = distinct_researchers,
   kuperman = tbls$kuperman[[1]], # all the same
   subtlex = tbls$subtlex[[1]], # all the same
