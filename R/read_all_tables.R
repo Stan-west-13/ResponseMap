@@ -1,3 +1,14 @@
+library(DBI)
+library(RSQLite)
+library(purrr)
+library(stringr)
+
+list_all_tables <- function(db_files) {
+  db_connections <- map(db_files, ~ dbConnect(RSQLite::SQLite(), .x))
+  on.exit(walk(db_connections, dbDisconnect))
+  map(db_connections, dbListTables)
+}
+
 read_all_tables <- function(db_files) {
   
   db_connections <- map(db_files, ~ dbConnect(RSQLite::SQLite(), .x))
