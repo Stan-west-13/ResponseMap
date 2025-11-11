@@ -1,8 +1,5 @@
-library(DBI)
-library(RSQLite)
 library(dplyr)
 library(purrr)
-library(stringr)
 library(tidyr)
 source("R/read_all_tables.R")
 
@@ -13,10 +10,6 @@ db_files <- c(
   "semantic_association_validation-crc_2.db",
   "Word-AssociationRT.db"
 )
-
-db <- dbConnect(RSQLite::SQLite(), db_files[[1]])
-tbl_list <- dbListTables(db)
-dbDisconnect(db)
 
 
 # Load from database ----
@@ -53,8 +46,23 @@ subject_decisions <- tbls$subject_decisions |>
 # Reconcile RESEARCHERS indices across databases ----
 distinct_researchers <- tbls$researchers |>
   list_rbind() |>
+  select(-id) |>
+  bind_rows(
+    c(first_name = "Meghan",    last_name = "Garcelon",  email = "mgarce3@lsu.edu"),
+    c(first_name = "Angelina",  last_name = "Chauvin",   email = "achau22@lsu.edu"),
+    c(first_name = "Hannah",    last_name = "Pedigo",    email = "hpedig2@lsu.edu"),
+    c(first_name = "Sophie",    last_name = "Vidrine",   email = "svidri8@lsu.edu"),
+    c(first_name = "Francesca", last_name = "Thomassee", email = "fthom22@lsu.edu"),
+    c(first_name = "Erin",      last_name = "Jines",     email = "ejines1@lsu.edu"),
+    c(first_name = "Trinity",   last_name = "Phipps",    email = "tphipp4@lsu.edu"),
+    c(first_name = "Daniela",   last_name = "Ucles",     email = "ducles1@lsu.edu"),
+    c(first_name = "Marissa",   last_name = "Goldthorp", email = "mgoldt1@lsu.edu"),
+    c(first_name = "Camila",    last_name = "Astete",    email = "castet2@lsu.edu"),
+    c(first_name = "Layla",     last_name = "Canaday",   email = "lcanad2@lsu.edu")
+  ) |>
   distinct() |>
-  mutate(id = seq_len(n()))
+  mutate(id = seq_len(n())) |>
+  relocate(id)
 
 
 # Reconcile CUE indices across databases ----
@@ -463,14 +471,6 @@ readr::write_csv(xx, "inconsistent-mappings.csv")
 # Read back the reconciled mappings, without inconsistencies ----
 revised_mapping <- readr::read_csv("inconsistent-mappings-reconciled.csv")
 
-resp_map |>
-  group_by(response_id) |>
-  filter(
-    if_any(c(kuperman_id, subtlex_id), is.na) |
-      if_any(c(revision, kuperman_id, subtlex_id), ~ n_distinct(.x) > 1)
-  ) |>
-  ungroup()
-
 resp_map_revised <- resp_map |>
   select(
     id=new_id,
@@ -482,8 +482,8 @@ resp_map_revised <- resp_map |>
     cue,
     response,
     old_revision=revision,
-    old_subtlex_id=subtlex_id,
-    old_kuperman_id=kuperman_id
+    old_kuperman_id = kuperman_id,
+    old_subtlex_id = subtlex_id
   ) |>
   left_join(
     revised_mapping |>
@@ -491,17 +491,20 @@ resp_map_revised <- resp_map |>
         cue,
         response,
         new_revision,
-        new_subtlex_id,
-        new_kuperman_id
+        subtlex_id=new_subtlex_id,
+        kuperman_id=new_kuperman_id
       ) |>
-      distinct()
+      distinct() |>
+      mutate(CHANGED = TRUE)
   ) |>
   mutate(
+    CHANGED = !is.na(CHANGED),
     revision = if_else(is.na(new_revision), old_revision, new_revision),
-    subtlex_id = if_else(is.na(new_subtlex_id), old_subtlex_id, new_subtlex_id),
-    kuperman_id = if_else(is.na(new_kuperman_id), old_kuperman_id, new_kuperman_id)
+    kuperman_id = if_else(CHANGED, kuperman_id, old_kuperman_id),
+    subtlex_id = if_else(CHANGED, subtlex_id, old_subtlex_id),
+    revision = if_else(response == revision, NA, revision)
   ) |>
-  mutate(revision = if_else(response == revision, NA, revision))
+  select(-new_revision, -old_revision, -old_kuperman_id, -old_subtlex_id, -CHANGED)
 
 # Write tables ----
 new_tbls <- list(

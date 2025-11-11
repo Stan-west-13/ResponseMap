@@ -28,17 +28,19 @@ CREATE TABLE subjects (
 
 CREATE TABLE study (
   id INTEGER PRIMARY KEY NOT NULL,
-  study TEXT
+  label TEXT,
+  abbreviation TEXT,
+  description TEXT
 );
 
 CREATE TABLE response_behaviors (
   id INTEGER PRIMARY KEY NOT NULL,
+  study_id INTEGER NOT NULL,
   response_order INTEGER NOT NULL,
   cue_order INTEGER NOT NULL,
-  study_id INTEGER NOT NULL,
   subject_id INTEGER NOT NULL,
-  response_id INTEGER NOT NULL,
   cue_id INTEGER NOT NULL,
+  response_id INTEGER NOT NULL,
   FOREIGN KEY (subject_id) REFERENCES subjects(id),
   FOREIGN KEY (cue_id) REFERENCES cues(id),
   FOREIGN KEY (response_id) REFERENCES responses(id),
@@ -51,12 +53,12 @@ CREATE TABLE responses (
   response TEXT NOT NULL
 );
 
-CREATE TABLE responses_study (
-  id INTEGER PRIMARY KEY NOT NULL,
+CREATE TABLE studies_cues (
   study_id INTEGER NOT NULL,
-  response_id INTEGER NOT NULL,
+  cue_id INTEGER NOT NULL,
+  PRIMARY KEY (study_id, cue_id),
   FOREIGN KEY (study_id) REFERENCES study(id),
-  FOREIGN KEY (response_id) REFERENCES responses(id)
+  FOREIGN KEY (cue_id) REFERENCES cues(id)
 );
 
 CREATE TABLE cues (
@@ -64,37 +66,34 @@ CREATE TABLE cues (
   cue TEXT NOT NULL
 );
 
-CREATE TABLE cues_study (
+CREATE TABLE studies_cues_responses (
+  study_id INTEGER NOT NULL,
+  cue_id INTEGER NOT NULL,
+  response_id INTEGER NOT NULL,
+  PRIMARY KEY (study_id, cue_id, response_id),
+  FOREIGN KEY (study_id) REFERENCES study(id),
+  FOREIGN KEY (cue_id) REFERENCES cues(id),
+  FOREIGN KEY (response_id) REFERENCES responses(id)
+);
+
+# Note that dates are stored NUMERIC, and can be encoded into dates in R with
+# `as.POSIXct()`
+CREATE TABLE response_map (
   id INTEGER PRIMARY KEY NOT NULL,
   study_id INTEGER NOT NULL,
   cue_id INTEGER NOT NULL,
-  FOREIGN KEY (study_id) REFERENCES study(id),
-  FOREIGN KEY (cue_id) REFERENCES cues(id)
-);
-
-CREATE TABLE cues_responses (
-  id INTEGER PRIMARY KEY NOT NULL,
-  cue_study_id INTEGER NOT NULL,
-  response_study_id INTEGER NOT NULL,
-  FOREIGN KEY (cue_study_id) REFERENCES cues_study(id),
-  FOREIGN KEY (response_study_id) REFERENCES responses_study(id)
-);
-
-
-CREATE TABLE response_map (
-  id INTEGER PRIMARY KEY NOT NULL,
-  cue_response_id INTEGER NOT NULL,
-  kuperman_id INTEGER,
-  subtlex_id INTEGER,
-  cue_id INTEGER,
-  revision TEXT,
+  response_id INTEGER NOT NULL,
   researcher_id INTEGER,
-  timestamp TEXT,
-  FOREIGN KEY(cue_response_id) REFERENCES cues_responses(id),
-  FOREIGN KEY(kuperman_id) REFERENCES kuperman(id),
-  FOREIGN KEY(subtlex_id) REFERENCES subtlex(id),
-  FOREIGN KEY(cue_id) REFERENCES cues(id),
-  FOREIGN KEY(researcher_id) REFERENCES researchers(id)
+  subtlex_id INTEGER,
+  kuperman_id INTEGER,
+  revision TEXT,
+  timestamp NUMERIC,
+  FOREIGN KEY (study_id) REFERENCES study(id),
+  FOREIGN KEY (cue_id) REFERENCES cues(id),
+  FOREIGN KEY (response_id) REFERENCES responses(id),
+  FOREIGN KEY (researcher_id) REFERENCES researchers(id),
+  FOREIGN KEY (subtlex_id) REFERENCES subtlex(id),
+  FOREIGN KEY (kuperman_id) REFERENCES kuperman(id),
 );
 
 
