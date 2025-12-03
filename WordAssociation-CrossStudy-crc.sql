@@ -34,6 +34,9 @@ CREATE TABLE subjects (
 
 CREATE TABLE conditions (
   id INTEGER PRIMARY KEY NOT NULL,
+  label TEXT NOT NULL,
+  description TEXT NOT NULL
+  
 )
 
 CREATE TABLE quality (
