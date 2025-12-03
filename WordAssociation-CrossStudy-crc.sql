@@ -1,9 +1,14 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE cues (
+  id INTEGER PRIMARY KEY NOT NULL,
+  cue TEXT NOT NULL
+)
 
 CREATE TABLE subjects (
   id INTEGER PRIMARY KEY NOT NULL,
   study_id INTEGER NOT NULL,
+  quality_id INTEGER,
   subject_code TEXT,
   Age INTEGER,
   EduLevel TEXT,
@@ -23,10 +28,31 @@ CREATE TABLE subjects (
   FreqToddlerInteract TEXT,
   COND_ID INTEGER NOT NULL,
   LIST_ID INTEGER NOT NULL,
-  condition TEXT
+  condition TEXT,
+  FOREIGN KEY (quality_id) REFERENCES quality(id)
 );
 
-CREATE TABLE study (
+CREATE TABLE conditions (
+  id INTEGER PRIMARY KEY NOT NULL,
+)
+
+CREATE TABLE quality (
+  id INTEGER PRIMARY KEY NOT NULL,
+  quality TEXT,
+  description TEXT
+);
+
+INSERT INTO quality (id, quality, description)
+VALUES
+  (1, "ideal", "Completed the task conscientiously"),
+  (2, "fine",  "Completed the task mostly well, but with some careless or low effort behavior"),
+  (3, "careless",  "Completed the task, but with evident lack of care throughout"),
+  (4, "bad", "Completed the task, but responses are garbage"),
+  (5, "incomplete", "The task is incomplete")
+;
+
+
+CREATE TABLE studies (
   id INTEGER PRIMARY KEY NOT NULL,
   label TEXT,
   abbreviation TEXT,
@@ -104,6 +130,7 @@ CREATE TABLE researchers (
   email TEXT NOT NULL UNIQUE
 );
 
+
 INSERT INTO researchers (id, first_name, last_name, email)
 VALUES
   (1, "Stan",     "West",    "swest19@lsu.edu"),
@@ -120,19 +147,6 @@ VALUES
   (12, "Camila", "Astete", "castet2@lsu.edu"),
   (13, "Layla", "Canaday", "lcanad2@lsu.edu")
 ;
-
-
-CREATE TABLE words_meta (
-  word TEXT NOT NULL,
-  kuperman_id INTEGER,
-  subtlex_id INTEGER,
-  cue_id INTEGER,
-  FOREIGN KEY (kuperman_id) REFERENCES kuperman(id),
-  FOREIGN KEY (subtlex_id) REFERENCES subtlex(id),
-  FOREIGN KEY (cue_id) REFERENCES cues(id)
-);
-
-
 
 
 CREATE TABLE subject_locks (
@@ -154,9 +168,6 @@ CREATE TABLE response_locks (
   FOREIGN KEY (cue_response_id) REFERENCES cues_responses(id),
   FOREIGN KEY (researcher_id) REFERENCES researchers(id)
 );
-
-
-
 
 CREATE TABLE kuperman (
   id INTEGER PRIMARY KEY NOT NULL,
