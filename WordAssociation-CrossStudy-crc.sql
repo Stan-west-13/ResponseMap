@@ -1,5 +1,11 @@
 PRAGMA foreign_keys = ON;
 
+CREATE TABLE conditions (
+  id INTEGER PRIMARY KEY NOT NULL,
+  label TEXT NOT NULL,
+  description TEXT NOT NULL
+)
+
 CREATE TABLE cues (
   id INTEGER PRIMARY KEY NOT NULL,
   cue TEXT NOT NULL
@@ -8,8 +14,8 @@ CREATE TABLE cues (
 CREATE TABLE subjects (
   id INTEGER PRIMARY KEY NOT NULL,
   study_id INTEGER NOT NULL,
+  subject_code TEXT NOT NULL,
   quality_id INTEGER,
-  subject_code TEXT,
   Age INTEGER,
   EduLevel TEXT,
   Gender TEXT,
@@ -29,7 +35,8 @@ CREATE TABLE subjects (
   COND_ID INTEGER NOT NULL,
   LIST_ID INTEGER NOT NULL,
   condition TEXT,
-  FOREIGN KEY (quality_id) REFERENCES quality(id)
+  FOREIGN KEY (quality_id) REFERENCES quality(id),
+  FOREIGN KEY (condition_id) REFERENCES conditions(id)
 );
 
 CREATE TABLE conditions (
