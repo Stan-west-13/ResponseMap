@@ -1,56 +1,140 @@
 PRAGMA foreign_keys = ON;
 
 CREATE TABLE conditions (
-  id INTEGER PRIMARY KEY NOT NULL,
-  label TEXT NOT NULL,
-  description TEXT NOT NULL
+  condition_id INTEGER PRIMARY KEY NOT NULL,
+  condition_code TEXT NOT NULL,
+  condition_desc TEXT NOT NULL
 )
 
+-- TODO: map cues to information in other databases
 CREATE TABLE cues (
-  id INTEGER PRIMARY KEY NOT NULL,
+  cue_id INTEGER PRIMARY KEY NOT NULL,
   cue TEXT NOT NULL
 )
 
 CREATE TABLE subjects (
   subject_id INTEGER PRIMARY KEY NOT NULL,
-  study_id INTEGER NOT NULL,
   subject_code TEXT NOT NULL,
+  age_years INTEGER,
+  study_id INTEGER NOT NULL,
+  condition_id INTEGER NOT NULL,
   quality_id INTEGER,
-  Age INTEGER,
-  EduLevel TEXT,
-  Gender TEXT,
-  IncomeLevel TEXT,
-  Race TEXT,
-  Ethnicity TEXT,
+  education_level_id INTEGER,
+  income_level_id INTEGER,
+  gender_identity_id INTEGER,
+  racial_identity_id INTEGER,
+  ethnic_identity_id INTEGER,
   autism_identity INTEGER,
-  Parent TEXT,
+  is_parent BOOLEAN,
   ToddlerInteractions TEXT,
   FreqToddlerInteract TEXT,
-  condition_id INTEGER NOT NULL,
   LIST_ID INTEGER NOT NULL,
+  FOREIGN KEY (study_id) REFERENCES studies(study_id),
+  FOREIGN KEY (condition_id) REFERENCES conditions(id),
   FOREIGN KEY (quality_id) REFERENCES quality(id),
-  FOREIGN KEY (condition_id) REFERENCES conditions(id)
+);
+
+CREATE TABLE toddler_interactions(
+
 );
 
 CREATE TABLE education_levels (
-  
+  education_level_id INTEGER PRIMARY KEY NOT NULL,
+  education_level_code TEXT,
+  education_level_text TEXT
 );
+
+CREATE TABLE gender_identities (
+  gender_identity_id INTEGER PRIMARY KEY NOT NULL,
+  gender_identity_code TEXT,
+  gender_identity_text TEXT
+);
+
+CREATE TABLE income_levels (
+  income_level_id INTEGER PRIMARY KEY NOT NULL,
+  income_level_code TEXT,
+  income_level_text TEXT
+);
+
+CREATE TABLE racial_identities (
+  racial_identity_id INTEGER PRIMARY KEY NOT NULL,
+  racial_identity_code TEXT,
+  racial_identity_text TEXT
+);
+
+CREATE TABLE ethnic_identities (
+  ethnic_identity_id INTEGER PRIMARY KEY NOT NULL,
+  ethnic_identity_code TEXT,
+  ethnic_identity_text TEXT
+);
+
+CREATE TABLE toddler_interactions (
+  toddler_interaction_id INTEGER PRIMARY KEY NOT NULL,
+  subject_id INTEGER NOT NULL,
+  toddler_interaction_question_id INTEGER NOT NULL,
+  toddler_interaction_valid_response_id INTEGER NOT NULL,
+);
+
+CREATE TABLE toddler_interaction_questions (
+  toddler_interaction_question_id INTEGER PRIMARY KEY NOT NULL,
+  toddler_interaction_question_code TEXT NOT NULL,
+  toddler_interaction_question_text TEXT NOT NULL
+);
+
+INSERT INTO toddler_interaction_questions (
+  toddler_interaction_question_id,
+  toddler_interaction_question_code,
+  toddler_interaction_question_text
+)
+VALUES
+  (1, "is_parent_of_toddler", "Are you currently the parent or guardian of a toddler?"),
+  (2, "was_parent_of_toddler", "Are you a parent or guardian who raised a toddler?"),
+  (3, "not_parent_interaction", "Do you ever interact with toddlers? Perhaps as an aunt, uncle, grandparent, teacher, therapist, coach, or as a friend of parents with a toddler."),
+  (4, "not_parent_interaction_frequency", "How often do you interact with toddlers?")
+;
+
+CREATE TABLE toddler_interaction_valid_responses (
+  toddler_interaction_valid_response_id INTEGER PRIMARY KEY NOT NULL,
+  toddler_interaction_valid_response_text TEXT NOT NULL,
+  toddler_interaction_valid_response_score INTEGER,
+  toddler_interaction_question_id INTEGER,
+  FOREIGN KEY (toddler_interaction_question_id) REFERENCES toddler_interaction_questions(toddler_interaction_question_id)
+);
+
+INSERT INTO toddler_interaction_valid_responses (
+  toddler_interaction_valid_response_id,
+  toddler_interaction_valid_response_text,
+  toddler_interaction_valid_response_score,
+  toddler_interaction_question_id
+)
+VALUES
+  ( 1, "no",      0, 1),
+  ( 2, "yes",     1, 1),
+  ( 3, "no",      0, 2),
+  ( 4, "yes",     1, 2),
+  ( 5, "no",      0, 3),
+  ( 6, "yes",     1, 3),
+  ( 7, "rarely",  0, 4),
+  ( 8, "monthly", 1, 4),
+  ( 9, "weekly",  2, 4),
+  (10, "daily",   3, 4)
+;
 
 CREATE TABLE assert (
   assert_id INTEGER PRIMARY KEY NOT NULL,
   subject_id INTEGER NOT NULL,
-  question_id INTEGER NOT NULL,
-  response_id INTEGER NOT NULL,
+  assert_question_id INTEGER NOT NULL,
+  assert_valid_response_id INTEGER NOT NULL,
   FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
-  FOREIGN KEY (question_id) REFERENCES ASSERT_questions(id),
-  FOREIGN KEY (response_id) REFERENCES ASSERT_valid_responses(id)
+  FOREIGN KEY (assert_question_id) REFERENCES assert_questions(assert_question_id),
+  FOREIGN KEY (assert_valid_response_id) REFERENCES assert_valid_responses(assert_valid_response_id)
 );
   
 
 CREATE TABLE assert_questions (
-  id INTEGER PRIMARY KEY NOT NULL,
-  code TEXT,
-  question TEXT
+  assert_question_id INTEGER PRIMARY KEY NOT NULL,
+  assert_question_code TEXT,
+  assert_question_text TEXT
 );
 
 INSERT INTO assert_questions (id, code, question)
@@ -64,37 +148,42 @@ VALUES
   (7, "R3", "Do you or do other people feel that you impose your routines or interests on others?")
 ;
 
-CREATE TABLE ASSERT_valid_responses (
-  id INTEGER PRIMARY KEY NOT NULL,
-  question_id INTEGER
-  response TEXT NOT NULL,
-  score INTEGER NOT NULL,
-  FOREIGN KEY (question_id) REFERENCES ASSERT_questions(id),
+CREATE TABLE assert_valid_responses (
+  assert_valid_response_id INTEGER PRIMARY KEY NOT NULL,
+  assert_valid_response_text TEXT NOT NULL,
+  assert_valid_response_score INTEGER NOT NULL,
+  assert_question_id INTEGER,
+  FOREIGN KEY (question_id) REFERENCES assert_questions(assert_question_id),
 );
 
-INSERT INTO ASSERT_valid_responses (id, question_id, response, score)
+INSERT INTO assert_valid_responses (
+  assert_valid_response_id,
+  assert_valid_response_text,
+  assert_valid_response_score,
+  assert_question_id
+)
 VALUES
-  ( 1, 1, "not true", 0),
-  ( 2, 1, "somewhat true", 1),
-  ( 3, 1, "certainly true", 2),
-  ( 4, 2, "not true", 0),
-  ( 5, 2, "somewhat true", 1),
-  ( 6, 2, "certainly true", 2),
-  ( 7, 3, "not true", 0),
-  ( 8, 3, "somewhat true", 1),
-  ( 9, 3, "certainly true", 2),
-  (10, 4, "not true", 0),
-  (11, 4, "somewhat true", 1),
-  (12, 4, "certainly true", 2),
-  (13, 5, "not true", 0),
-  (14, 5, "somewhat true", 1),
-  (15, 5, "certainly true", 2),
-  (16, 6, "not true", 0),
-  (17, 6, "somewhat true", 1),
-  (18, 6, "certainly true", 2),
-  (19, 7, "not true", 0),
-  (20, 7, "somewhat true", 1),
-  (21, 7, "certainly true", 2)
+  ( 1, "not true",       0, 1),
+  ( 2, "somewhat true",  1, 1),
+  ( 3, "certainly true", 2, 1),
+  ( 4, "not true",       0, 2),
+  ( 5, "somewhat true",  1, 2),
+  ( 6, "certainly true", 2, 2),
+  ( 7, "not true",       0, 3),
+  ( 8, "somewhat true",  1, 3),
+  ( 9, "certainly true", 2, 3),
+  (10, "not true",       0, 4),
+  (11, "somewhat true",  1, 4),
+  (12, "certainly true", 2, 4),
+  (13, "not true",       0, 5),
+  (14, "somewhat true",  1, 5),
+  (15, "certainly true", 2, 5),
+  (16, "not true",       0, 6),
+  (17, "somewhat true",  1, 6),
+  (18, "certainly true", 2, 6),
+  (19, "not true",       0, 7),
+  (20, "somewhat true",  1, 7),
+  (21, "certainly true", 2, 7)
 ;
 
 
