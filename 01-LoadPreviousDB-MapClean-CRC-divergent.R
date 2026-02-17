@@ -25,19 +25,28 @@ tbls <- read_all_tables(db_files)
 
 # Create STUDIES table ----
 studies <- tibble(
-  id = 1:3,
-  label = c("", "", "time to associate"),
-  abbrev = c("", "", "TTA"),
-  description = c("", "", "")
+  study_id = 1:3,
+  study_code = c("", "", "TTA"),
+  study_name = c("", "", "time to associate"),
+  study_desc = c("", "", "")
 )
  
 # Concatenate SUBJECTS tables ----
+tbls$subjects[1:2] <- map(tbls$subjects[1:2], ~ {
+  .x |>
+    rename(subject_code = id) |>
+    mutate(subject_code = as.character(subject_code)) |>
+    relocate(subject_code)
+})
 tbls$subjects[[3]] <- tbls$subjects[[3]] |>
-  separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code"))
+  separate_wider_delim(subject_id, delim = "_", names = c(NA, "subject_code")) |>
+  relocate(subject_code)
 
 subjects <- tbls$subjects |>
-  list_rbind() |>
-  mutate(id = seq_len(n()))
+  list_rbind(names_to = "study_id") |>
+  mutate(subject_id = seq_len(n())) |>
+  left_join(studies, by = join_by(study_id)) |>
+  relocate(study_id, study_code, study_name, study_desc, subject_id, subject_code) 
 
 # Concatenate SUBJECT_DECISIONS ----
 
@@ -45,7 +54,8 @@ subjects <- tbls$subjects |>
 distinct_researchers <- tbls$researchers |>
   list_rbind() |>
   distinct() |>
-  mutate(id = seq_len(n()))
+  mutate(id = seq_len(n())) |>
+  rename_with(~ paste0("researcher_", .x))
 
 
 # Reconcile CUE indices across databases ----
@@ -165,13 +175,18 @@ resp_map <- tbls$response_map |>
 
 
 # Revise indices in RESPONSE_BEHAVIORS ----
+tbls$response_behaviors[1:2] <- map(tbls$response_behaviors[1:2], ~ {
+  .x |>
+    rename(subject_code = subject_id) |>
+    mutate(subject_code = as.character(subject_code))
+})
 tbls$response_behaviors[[3]] <- tbls$response_behaviors[[3]] |>
   separate_wider_delim(subject_id, delim = "_", names = c("study_code", "subject_code")) |>
-  mutate(subject_code = as.integer(subject_code))
+  mutate(subject_code = as.character(subject_code))
 
 response_behaviors <- tbls$response_behaviors |>
   list_rbind(names_to = "study_id") |>
-  left_join(subjects |> select(subject_id=id, study_code, subject_code)) |>
+  left_join(subjects |> select(study_id, subject_id, subject_code), by = join_by(study_id, subject_code)) |>
   select(-study_code, -subject_code) |>
   select(
     study_id,
@@ -190,8 +205,8 @@ response_behaviors <- tbls$response_behaviors |>
     id_map_resps |> select(study_id, old_response_id=old_id, response_id=new_id),
     by = join_by(study_id, old_response_id)
   ) |>
-  mutate(id = seq_len(n())) |>
-  select(id, study_id, subject_id, cue_id, response_id, cue_order, response_order)
+  mutate(association_id = seq_len(n())) |>
+  select(association_id, study_id, subject_id, cue_id, response_id, cue_order, response_order)
 
 
 
@@ -450,12 +465,12 @@ xx <- inconsistent_mapping |>
   select(cue, response, revision, subtlex_id, kuperman_id, starts_with("stan_"))
 
 # Write out inconsistent mappings for further reconciliation
-readr::write_csv(xx, "inconsistent-mappings.csv")
+readr::write_csv(xx, "inconsistent-mappings-2026_17_02.csv")
 
 # Read back the reconciles mappings, without inconsistencies
 revised_mapping <- readr::read_csv("inconsistent-mappings-reconciled.csv")
 
-resp_map |>
+resp_map_revised |>
   group_by(response_id) |>
   filter(
     if_any(c(kuperman_id, subtlex_id), is.na) |
