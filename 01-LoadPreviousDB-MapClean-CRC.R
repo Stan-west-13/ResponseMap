@@ -11,6 +11,77 @@ db_files <- c(
   "Word-AssociationRT.db"
 )
 
+conditions <- tibble(
+  condition_code = c(
+    "standard",
+    "peer",
+    "child",
+    "short",
+    "creative",
+    "noise",
+    "classical music",
+    "children's music"
+  ),
+  condition_context = c(
+    "none",
+    "peer",
+    "child",
+    "orthographic",
+    "creative",
+    "none",
+    "peer",
+    "child"
+  ),
+  condition_type = c(
+    "explicit",
+    "explicit",
+    "explicit",
+    "explicit",
+    "explicit",
+    "implicit",
+    "implicit",
+    "implicit"
+  ),
+  condition_desc = c(
+    "Respond with the first word that comes to mind (i.e., conventional instructions). This is coded as explicit, because this condition code should be used to describe the conventional instructions provided either in experiments without any other conditions or in experiments with explicit conditions.",
+    "Respond with the first word that comes to mind, as if your response will be provided to a peer. These instructions add a context frame, but it is the presumably the default context.",
+    "Respond with the first word that comes to mind, as if your response will be provided to a toddler. These instructions add a context frame that may change the associations and words that are appropriate.",
+    "Respond with the shortest word that comes to mind. These instructions add a constraint on responses that is unlikely to be a coherent semantic context.",
+    "Respond with associations that you believe other people are unlikely to provide. These instructions add a constraint on responses that is unlikely to be a coherent semantic context.",
+    "Respond with the first word that comes to mind (i.e., conventional instructions). Meanwhile, participants hear white noise at 45 dB after a focused listening period at 60 dB for 110 seconds.",
+    "Respond with the first word that comes to mind (i.e., conventional instructions). Meanwhile, participants hear classical music at 45 dB after a focused listening period at 60 dB for 110 seconds.",
+    "Respond with the first word that comes to mind (i.e., conventional instructions). Meanwhile, participants hear children's music at 45 dB after a focused listening period at 60 dB for 110 seconds."
+  )
+) |>
+  mutate(condition_id = seq_len(n()), .before = 1)
+
+condition_maps <- tibble(
+  study_id = c(
+    1,
+    1,
+    1
+    2,
+    2,
+    2,
+    3
+  ),
+  condition_id = c(
+    1,
+    3,
+    4
+    1,
+    3,
+    4
+  ),
+  COND_ID = c(
+    1,
+    2,
+    3
+    1,
+    2,
+    3
+  )
+)
 
 # Load from database ----
 tbls <- read_all_tables(db_files)
@@ -508,7 +579,7 @@ resp_map_revised <- resp_map |>
 
 # Write tables ----
 new_tbls <- list(
-  studies = studies,
+  studies = studies |> rename(study_id = id, study_code = abbreviation, study_name = label, study_desc = description),
   studies_cues = study_cue_map,
   researchers = distinct_researchers,
   kuperman = tbls$kuperman[[1]], # all the same
