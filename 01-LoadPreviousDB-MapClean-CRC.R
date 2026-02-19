@@ -95,6 +95,13 @@ studies <- tibble(
 
 # Retrieve demographic tables ----
 education_levels <- dbReadTable(con, "education_levels")
+income_levels <- dbReadTable(con, "income_levels")
+gender_identities <- dbReadTable(con, "gender_identities")
+racial_identities <- dbReadTable(con, "racial_identities")
+ethnic_identities <- dbReadTable(con, "ethnic_identities")
+
+# Retrieve ASSERT tables ----
+assert
 
 # Concatenate SUBJECTS tables across databases ----
 tbls$subjects[[3]] <- tbls$subjects[[3]] |>
@@ -118,10 +125,22 @@ subjects <- tbls$subjects |>
     study_id,
     condition_id,
     subject_quality_id,
-    
-    
-    
+    education_level_code = EduLevel,
+    income_level_text = IncomeLevel,
+    gender_identity_code = Gender,
+    racial_identity_id = Race,
+    ethnic_identity_id = Ethnicity,
+    autistic_identity_id = ASD_identity
+  ) |>
+  left_join(income_levels |> select(income_level_id, income_level_text), by = join_by(income_level_text)) |>
+  mutate(
+    education_level_id = factor(education_level_code, levels = c("less than high school", "High School", "Some college", "Associate", "Bachelor")) |> as.integer(),
+    gender_identity_id = factor(gender_identity_code, levels)
   )
+    
+distinct(subjects, education_level_id, education_level_code) |> left_join(education_levels, by = join_by(education_level_id))
+distinct(subjects, income_level_id, income_level_text) |> left_join(income_levels, by = join_by(income_level_id))
+distinct(subjects, gender_identity_code) # |> left_join(income_levels, by = join_by(income_level_id))
 
 
 # Concatenate SUBJECT_DECISIONS ----
