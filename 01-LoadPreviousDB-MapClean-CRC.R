@@ -1,8 +1,23 @@
+library(DBI)
+library(RMariaDB)
+library(jsonlite)
 library(dplyr)
 library(purrr)
 library(tidyr)
 source("R/read_all_tables.R")
 
+# Connect to remote database ----
+
+server_credentials <- jsonlite::read_json("server-credentials.json")
+
+con <- dbConnect(
+  RMariaDB::MariaDB(),
+  dbname = server_credentials$dbname,
+  username = server_credentials$username,
+  password = server_credentials$password,
+  host = "96.125.26.54",
+  port = server_credentials$port
+)
 
 # Database list ----
 db_files <- c(
@@ -11,6 +26,7 @@ db_files <- c(
   "Word-AssociationRT.db"
 )
 
+# Define CONDITIONS table ----
 conditions <- tibble(
   condition_code = c(
     "standard",
@@ -55,32 +71,14 @@ conditions <- tibble(
 ) |>
   mutate(condition_id = seq_len(n()), .before = 1)
 
+
+## Define condition maps ----
+# This relates the global condition IDs to the condition IDs idiosyncratically
+# defined within each experiment
 condition_maps <- tibble(
-  study_id = c(
-    1,
-    1,
-    1
-    2,
-    2,
-    2,
-    3
-  ),
-  condition_id = c(
-    1,
-    3,
-    4
-    1,
-    3,
-    4
-  ),
-  COND_ID = c(
-    1,
-    2,
-    3
-    1,
-    2,
-    3
-  )
+  study_id     = c( 1, 1, 1, 2, 2, 2, 3, 3, 3, 3 ),
+  condition_id = c( 1, 3, 4, 1, 3, 4, 2, 3, 4, 5 ),
+  COND_ID      = c( 1, 2, 3, 1, 2, 3, 1, 2, 3, 4 )
 )
 
 # Load from database ----
@@ -95,8 +93,13 @@ studies <- tibble(
   description = c("", "", "")
 )
 
+# Retrieve demographic tables ----
+education_levels <- dbReadTable(con, "education_levels")
 
 # Concatenate SUBJECTS tables across databases ----
+tbls$subjects[[3]] <- tbls$subjects[[3]] |>
+  mutate(COND_ID = as.integer(factor(condition, c("peer", "child", "short", "creative"))))
+
 subjects <- tbls$subjects |>
   imap(~{
     if (.y == 3) {
@@ -106,8 +109,19 @@ subjects <- tbls$subjects |>
     }
   }) |>
   list_rbind(names_to = "study_id") |>
-  mutate(id = seq_len(n())) |>
-  relocate(id)
+  mutate(subject_id = seq_len(n()), subject_quality_id = NA) |>
+  left_join(condition_maps, by = join_by(study_id, COND_ID)) |>
+  select(
+    subject_id,
+    subject_code,
+    age_years = Age,
+    study_id,
+    condition_id,
+    subject_quality_id,
+    
+    
+    
+  )
 
 
 # Concatenate SUBJECT_DECISIONS ----
