@@ -128,19 +128,20 @@ subjects <- tbls$subjects |>
     education_level_code = EduLevel,
     income_level_text = IncomeLevel,
     gender_identity_code = Gender,
-    racial_identity_id = Race,
+    racial_identity_code = Race,
     ethnic_identity_id = Ethnicity,
     autistic_identity_id = ASD_identity
   ) |>
   left_join(income_levels |> select(income_level_id, income_level_text), by = join_by(income_level_text)) |>
   mutate(
     education_level_id = factor(education_level_code, levels = c("less than high school", "High School", "Some college", "Associate", "Bachelor")) |> as.integer(),
-    gender_identity_id = factor(gender_identity_code, levels)
+    gender_identity_id = factor(gender_identity_code, levels = c("No resp.", "Male", "Female", "Other")) |> as.integer()
   )
     
 distinct(subjects, education_level_id, education_level_code) |> left_join(education_levels, by = join_by(education_level_id))
 distinct(subjects, income_level_id, income_level_text) |> left_join(income_levels, by = join_by(income_level_id))
-distinct(subjects, gender_identity_code) # |> left_join(income_levels, by = join_by(income_level_id))
+distinct(subjects, gender_identity_id, gender_identity_code) |> left_join(gender_identities, by = join_by(gender_identity_id))
+distinct(subjects, racial_identity_code)# |> left_join(racial_identities, by = join_by(racial_identity_id))
 
 
 # Concatenate SUBJECT_DECISIONS ----
