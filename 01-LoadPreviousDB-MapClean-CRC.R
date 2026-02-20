@@ -101,7 +101,7 @@ racial_identities <- dbReadTable(con, "racial_identities")
 ethnic_identities <- dbReadTable(con, "ethnic_identities")
 
 # Retrieve ASSERT tables ----
-assert
+assert_valid_responses <- dbReadTable(con, "assert_valid_responses")
 
 # Concatenate SUBJECTS tables across databases ----
 tbls$subjects[[3]] <- tbls$subjects[[3]] |>
