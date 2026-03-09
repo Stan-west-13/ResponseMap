@@ -100,8 +100,16 @@ gender_identities <- dbReadTable(con, "gender_identities")
 racial_identities <- dbReadTable(con, "racial_identities")
 ethnic_identities <- dbReadTable(con, "ethnic_identities")
 
+# Retrieve autism identity table ----
+autism_identities <- dbReadTable(con, "autism_identities")
+
 # Retrieve ASSERT tables ----
-assert_valid_responses <- dbReadTable(con, "assert_valid_responses")
+assert_question_responses <- dbReadTable(con, "assert_question_responses")
+assert_questions <- dbReadTable(con, "assert_questions")
+
+# Retrieve toddler interactions tables ----
+toddler_interaction_valid_responses <- dbReadTable(con, "toddler_interaction_valid_responses")
+toddler_interaction_questions <- dbReadTable(con, "toddler_interaction_questions")
 
 # Concatenate SUBJECTS tables across databases ----
 tbls$subjects[[3]] <- tbls$subjects[[3]] |>
@@ -129,20 +137,67 @@ subjects <- tbls$subjects |>
     income_level_text = IncomeLevel,
     gender_identity_code = Gender,
     racial_identity_code = Race,
-    ethnic_identity_id = Ethnicity,
-    autistic_identity_id = ASD_identity
+    ethnic_identity_code = Ethnicity,
+    autism_identity_text = ASD_identity,
+    S1:R3,
+    is_parent_of_toddler = Parent,
+    not_parent_interaction = ToddlerInteractions,
+    not_parent_interaction_frequency = FreqToddlerInteract
   ) |>
   left_join(income_levels |> select(income_level_id, income_level_text), by = join_by(income_level_text)) |>
+  left_join(autism_identities, by = join_by(autism_identity_text)) |>
   mutate(
     education_level_id = factor(education_level_code, levels = c("less than high school", "High School", "Some college", "Associate", "Bachelor")) |> as.integer(),
-    gender_identity_id = factor(gender_identity_code, levels = c("No resp.", "Male", "Female", "Other")) |> as.integer()
-  )
+    gender_identity_id = factor(gender_identity_code, levels = c("No resp.", "Male", "Female", "Other")) |> as.integer(),
+    ethnic_identity_id = factor(ethnic_identity_code, levels = c("No resp.", "Hispanic", "non-Hispanic")) |> as.integer()
+  ) |>
+  select(-c(education_level_code, income_level_text, gender_identity_code, ethnic_identity_code, identify_autistic, diagnosed_autistic, autism_identity_text))
     
 distinct(subjects, education_level_id, education_level_code) |> left_join(education_levels, by = join_by(education_level_id))
 distinct(subjects, income_level_id, income_level_text) |> left_join(income_levels, by = join_by(income_level_id))
 distinct(subjects, gender_identity_id, gender_identity_code) |> left_join(gender_identities, by = join_by(gender_identity_id))
 distinct(subjects, racial_identity_code)# |> left_join(racial_identities, by = join_by(racial_identity_id))
 
+subject_racial_identities <- subjects |>
+  distinct(subject_id, racial_identity_code) |>
+  separate_longer_delim(racial_identity_code, delim = ",") |>
+  mutate(racial_identity_id = as.integer(factor(
+    racial_identity_code,
+    levels = c(
+      "No resp.",
+      "White",
+      "Black",
+      "Asian",
+      "Nat. Amer.",
+      "Pac. Isles",
+      "Other"
+    )
+  ))) |>
+  select(-racial_identity_code)
+
+subjects <- subjects |> select(-racial_identity_code)
+
+# Assert ----
+assert_subject_question_responses <- subjects |>
+  select(subject_id, S1:R3) |>
+  pivot_longer(S1:R3, names_to = "assert_question_code", values_to = "assert_response_text") |>
+  mutate(assert_response_text = tolower(assert_response_text)) |>
+  left_join(assert_questions, by = join_by(assert_question_code)) |>
+  left_join(assert_question_responses, by = join_by(assert_question_id, assert_response_text)) |>
+  select(subject_id, assert_question_id, assert_response_id)
+
+subjects <- subjects |> select(-c(S1:R3))
+
+# Toddler interactions ----
+subject_toddler_interactions <- subjects |>
+  select(subject_id, is_parent_of_toddler:not_parent_interaction_frequency) |>
+  pivot_longer(is_parent_of_toddler:not_parent_interaction_frequency, names_to = "toddler_interaction_question_code", values_to = "toddler_interaction_valid_response_text") |>
+  mutate(toddler_interaction_valid_response_text = tolower(toddler_interaction_valid_response_text)) |>
+  left_join(toddler_interaction_questions |> select(toddler_interaction_question_id, toddler_interaction_question_code), by = join_by(toddler_interaction_question_code)) |>
+  left_join(toddler_interaction_valid_responses, by = join_by(toddler_interaction_question_id, toddler_interaction_valid_response_text)) |>
+  select(subject_id, toddler_interaction_question_id, toddler_interaction_valid_response_id)
+  
+subjects <- subjects |> select(-c(is_parent_of_toddler:not_parent_interaction_frequency))
 
 # Concatenate SUBJECT_DECISIONS ----
 subject_decisions <- tbls$subject_decisions |>
@@ -293,7 +348,7 @@ response_behaviors <- tbls$response_behaviors |>
     separate_wider_delim(.x, subject_id, delim = "_", names = c("study_code", "subject_code"), too_few = "align_end")
   }) |>
   list_rbind(names_to = "study_id") |>
-  left_join(subjects |> select(subject_id=id, study_id, subject_code)) |>
+  left_join(subjects |> select(subject_id=subject_id, study_id, subject_code)) |>
   select(
     study_id,
     old_id = id,
@@ -614,18 +669,48 @@ resp_map_revised <- resp_map |>
 # Write tables ----
 new_tbls <- list(
   studies = studies |> rename(study_id = id, study_code = abbreviation, study_name = label, study_desc = description),
-  studies_cues = study_cue_map,
-  researchers = distinct_researchers,
-  kuperman = tbls$kuperman[[1]], # all the same
-  subtlex = tbls$subtlex[[1]], # all the same
+  study_cues = study_cue_map, # maybe not needed
+  researchers = distinct_researchers, # this is already entered
+  kuperman = tbls$kuperman[[1]], # all the same; already entered
+  subtlex = tbls$subtlex[[1]], # all the same; already entered
   decisions = tbls$decisions[[1]], # all the same
   subjects = subjects,
-  subject_decisions = subject_decisions,
   cues = distinct_cues,
   responses = distinct_responses,
-  cues_responses = cue_resp_map,
-  response_map = resp_map_revised,
-  response_behaviors = response_behaviors
+  study_cue_responses = cue_resp_map |> select(study_id, cue_id, response_id),
+  response_map = resp_map_revised |>
+    mutate(
+      subtlex_response_map_confidence_id = NA,
+      subtlex_response_map_type_id = NA,
+      kuperman_response_map_confidence_id = NA,
+      kuperman_response_map_type_id = NA,
+      response_revision_confidence_id = NA,
+      response_revision_type_id = NA,
+      response_map_owner_researcher_id = NA
+    ) |>
+    select(response_map_id = id, study_id, cue_id, response_id, subtlex_id, subtlex_response_map_confidence_id, subtlex_response_map_type_id, kuperman_id, kuperman_response_map_confidence_id, kuperman_response_map_type_id, response_revision = revision, response_revision_confidence_id, response_revision_type_id, response_map_owner_researcher_id, response_map_time = timestamp),
+  associations = response_behaviors |>
+    mutate(
+      condition_id = NA,
+      response_time_ms = NA,
+      latency_to_first_key_ms = NA,
+      latency_to_first_enter_ms = NA,
+      keypresses_json = NA
+    ) |>
+    select(
+      association_id = id,
+      study_id,
+      subject_id,
+      condition_id,
+      cue_id,
+      cue_order,
+      response_id,
+      response_order,
+      response_time_ms,
+      latency_to_first_key_ms, 
+      latency_to_first_enter_ms,
+      keypresses_json
+    )
 )
 
 iwalk(new_tbls, ~{readr::write_csv(.x, file.path("tables", "csv", paste0(.y, ".csv")))})
