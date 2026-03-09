@@ -8,13 +8,13 @@ library(lmerTest)
 
 
 # Create list of all CSV files in data directory ----
-file_list <- list.files("Data", pattern = "*.csv", full.names = TRUE, recursive = TRUE)[c(-1, -2, -3, -101, -102)]
+file_list <- list.files("data-exp", pattern = "*.csv", full.names = TRUE, recursive = TRUE)
 
 # Read each file and parse into first response and all responses data frames ----
 
 ## First, define a function that reads one file at a time and processes it
 read_exp_data <- function(filename) {
-  x <- read_csv(filename) |>
+  x <- read_csv(filename, na = c("", "NA", "None")) |>
     mutate(
       condition = factor(condition, levels = c("n", "cl", "c"), labels = c("noise", "classical", "child")),
       participant = as.factor(participant)
@@ -55,7 +55,6 @@ read_exp_data <- function(filename) {
 ## Then, apply that function to each file using `map()`
 d <- map(file_list, read_exp_data)
 
-
 # Bind participant data frames ----
 
 ## `d` is a list of participants, each containing a list of two data frames. 
@@ -66,14 +65,26 @@ d_first_response <- map(d, ~ .x$first_response) |> list_rbind()
 d_all_responses <- map(d, ~ .x$all_responses) |> list_rbind()
 
 # merge in mappings
-mappings <- readRDS("tables/rds/resp-map-revised.rds")
-kuperman <- readRDS("tables/rds/kuperman.rds")
-subtlex <- readRDS("tables/rds/subtlex.rds")
+mappings_0 <- readRDS("tables/rds/resp-map-revised.rds") # I think response_map is what we actually want to work from...
+mappings_1 <- readRDS("tables/rds/response_map.rds")
+mappings_2 <- read_csv("data/unmapped-distinct-cue_responses-psycholing_2.csv") |>
+  rename(subtlex_id = subtlex_db_key, kuperman_id = aoa_db_key) # These are the mappings from Marissa
+kuperman <- readRDS("tables/rds/kuperman.rds") |> rename(kuperman_id = id, response = word)
+subtlex <- readRDS("tables/rds/subtlex.rds") |> select(subtlex_id = id, response = word, Lg10WF)
 
-mappings |> filter(if_any(c(kuperman_id, subtlex_id), ~ is.na(.x)))
+mappings_1 |> filter(if_any(c(kuperman_id, subtlex_id), ~ is.na(.x)))
+mappings_2 |> filter(if_any(c(kuperman_id, subtlex_id), ~ is.na(.x)))
 
-mappings <- readRDS("tables/rds/resp-map-revised.rds") |>
-  select(response, )
+mappings_2 |>
+  left_join(
+    mappings_1 |>
+      select(response, kuperman_id, subtlex_id) |>
+      distinct(),
+    by = join_by(response),
+    suffix = c("", ".x")
+  ) |>
+  left_join(kuperman, by = join_by(response), suffix = c("", ".y")) |>
+  left_join(subtlex, by = join_by(response), suffix = c("", ".z"))
 
 
 # Plot summary of response times by condition ----
